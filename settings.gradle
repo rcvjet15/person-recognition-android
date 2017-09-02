@@ -1,0 +1,4 @@
+
+include ':openCVLibrary320'
+include ':faceRecognition'
+include ':openCVTutorial3CameraControl'

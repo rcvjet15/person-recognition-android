@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Person Recognition</string>
+
+    <!-- Main activity-->
+    <string name="add_btn">Add</string>
+    <string name="users_btn">Users</string>
+    <string name="about_btn">About Us</string>
+    <string name="gallery_btn">Gallery</string>
+
+    <!-- Fd activity-->
+    <string name="main_camera_label"></string>
+
+    <!-- Users activity-->
+    <string name="users_label">Users</string>
+
+    <!-- About Us activity-->
+    <string name="about_us_label">About Us</string>
+
+</resources>
