@@ -9,6 +9,7 @@ import java.util.Date;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
+import org.opencv.android.JavaCameraView;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
@@ -19,19 +20,25 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.imgproc.Imgproc;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.hardware.Camera;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
-public class FdActivity extends Activity implements CvCameraViewListener2 {
+public class FdActivity extends Activity implements CvCameraViewListener2, Camera.PictureCallback {
 
     private static final String    TAG                 = "OCVSample::Activity";
     private static final Scalar    FACE_RECT_COLOR     = new Scalar(0, 255, 0, 255);
@@ -56,6 +63,8 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm");
     final String folderName = "Folder_" + formatter.format(new Date());
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -115,6 +124,27 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         mDetectorName[NATIVE_DETECTOR] = "Native (tracking)";
 
         Log.i(TAG, "Instantiated new " + this.getClass());
+    }
+
+
+    @Override
+    public void onPictureTaken(byte[] data, Camera camera) {
+        Toast.makeText(this, "Picture was taken", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        Log.i(TAG, "Save bitmap picture.");
+
+        Toast.makeText(this, "Take picture", Toast.LENGTH_SHORT).show();
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null){
+
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+
+        return super.onTouchEvent(event);
     }
 
     /** Called when the activity is first created. */
@@ -221,10 +251,6 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         return true;
     }
 
-    public void takePicture(View view){
-
-    }
-
     private void setMinFaceSize(float faceSize) {
         mRelativeFaceSize = faceSize;
         mAbsoluteFaceSize = 0;
@@ -244,7 +270,6 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         }
     }
 
-
     private File getFile(){
 
         File folder = new File("/storage/extSdCard/camera_app/" + folderName);
@@ -260,4 +285,5 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         File imageFile = new File(folder, fileName);
         return imageFile;
     }
+
 }

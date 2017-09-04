@@ -18,19 +18,23 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="FdActivity"
-                  android:screenOrientation="landscape"
-                  android:configChanges="keyboardHidden|orientation">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                        android:value=".MainActivity"/>
-        </activity>
-
         <activity android:name=".AboutUsActivity"
             android:label="@string/about_us_label">
             <meta-data android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
 
+
+        <!-- Providers -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
     </application>
 
     <supports-screens android:resizeable="true"
@@ -41,11 +45,14 @@
 
     <uses-sdk android:minSdkVersion="9" />
 
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <!-- Features-->
+    <uses-feature android:name="android.hardware.camera" android:required="true"/>
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
-    <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.front" android:required="true"/>
     <uses-feature android:name="android.hardware.camera.front.autofocus" android:required="false"/>
 
 </manifest>
