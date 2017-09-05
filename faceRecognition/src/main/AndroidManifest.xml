@@ -18,6 +18,13 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".CaptureImageActivity"
+            android:label="@string/capture_image_label"
+            android:screenOrientation="portrait">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
+
         <activity android:name=".AboutUsActivity"
             android:label="@string/about_us_label">
             <meta-data android:name="android.support.PARENT_ACTIVITY"

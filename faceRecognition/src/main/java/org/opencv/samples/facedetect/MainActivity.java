@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import java.text.SimpleDateFormat;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.support.v4.graphics.BitmapCompat;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,9 +22,6 @@ import java.util.Date;
 
 public class MainActivity extends Activity {
 
-    String mCurrentPhotoPath;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,27 +29,10 @@ public class MainActivity extends Activity {
     }
 
     public void faceRecognition(View view){
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        
-        // Make sure that device has camera to handle intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null){
-            // Create the File where the photo should go
-            File photoFile = null;
-            try{
-                photoFile = createImageFile();
-            }
-            catch (IOException e){
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-
-            if (photoFile != null){
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            }
-        }
+        Context context = this;
+        Class destinationClass = CaptureImageActivity.class;
+        Intent intent = new Intent(context, destinationClass);
+        startActivity(intent);
     }
 
     public void addUser(View view){
@@ -73,19 +56,4 @@ public class MainActivity extends Activity {
 //        startActivity(intent);
 //    }
 
-    private File createImageFile() throws IOException {
-        // Create image file name
-        String timestamp = new SimpleDateFormat("yyyy_mm_dd_HH_mm_ss").format(new Date());
-        String imageFileName = "JPEG_" + timestamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,
-                ".jpg",
-                storageDir
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
 }
