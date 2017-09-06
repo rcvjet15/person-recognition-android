@@ -118,8 +118,7 @@ public class CaptureImageActivity extends Activity {
                     catch (IOException e){
 
                     }
-                    mButtonSend.setVisibility(View.VISIBLE);
-                    mButtonCancel.setVisibility(View.VISIBLE);
+
                     break;
                 case Activity.RESULT_CANCELED:
                     // Go to parent activity if no picture was already taken

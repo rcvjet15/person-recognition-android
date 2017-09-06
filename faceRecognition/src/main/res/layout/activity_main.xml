@@ -63,23 +63,13 @@
 
                 <Button
                     android:id="@+id/addButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="5dp"
-                    android:background="#8C9EFF"
-                    android:textColor="#E3F2FD"
+                    style="@style/mainActivityButtonLeft"
                     android:textAllCaps="true"
                     android:onClick="addUser"
                     android:text="@string/add_btn"/>
                 <Button
                     android:id="@+id/usersButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="#E3F2FD"
-                    android:background="#8C9EFF"
+                    style="@style/mainActivityButtonLeft"
                     android:text="@string/users_btn"
                     android:textAllCaps="true"
                     android:onClick="serverPart"/>
@@ -91,24 +81,12 @@
                 android:layout_weight="1">
                 <Button
                     android:id="@+id/galleryButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:textColor="#E3F2FD"
-                    android:background="#8C9EFF"
+                    style="@style/mainActivityButtonRight"
                     android:textAllCaps="true"
                     android:text="@string/gallery_btn"/>
                 <Button
                     android:id="@+id/aboutButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:textColor="#E3F2FD"
-                    android:background="#8C9EFF"
+                    style="@style/mainActivityButtonRight"
                     android:textAllCaps="true"
                     android:onClick="aboutUs"
                     android:text="@string/about_btn"/>

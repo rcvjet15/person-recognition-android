@@ -8,4 +8,37 @@
         <!--<item name="colorAccent">@color/colorAccent</item>-->
     <!--</style>-->
 
+    <style name="appButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:background">#8C9EFF</item>
+        <item name="android:textColor">#E3F2FD</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <!-- Main activitiy -->
+    <style name="mainActivityButton" parent="appButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <style name="mainActivityButtonLeft" parent="mainActivityButton">
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+    </style>
+    <style name="mainActivityButtonRight" parent="mainActivityButton">
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+    </style>
+
+    <!-- Capture Image Activity -->
+    <style name="captureImageActivityButton" parent="appButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">30</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
 </resources>
+
+

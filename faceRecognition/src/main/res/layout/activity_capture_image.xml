@@ -28,16 +28,9 @@
 
         <Button
             android:id="@+id/cancelSendBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="30"
-            android:layout_gravity="center_vertical"
-            android:background="#8C9EFF"
-            android:textColor="#E3F2FD"
-            android:textAllCaps="true"
+            style="@style/captureImageActivityButton"
             android:onClick="cancelSend"
-            android:text="@string/cancel"
-            android:visibility="invisible"/>
+            android:text="@string/cancel"/>
 
         <!-- Spacer View -->
         <View
@@ -63,15 +56,10 @@
 
         <Button
             android:id="@+id/sendPictureBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="30"
-            android:layout_gravity="center_vertical"
-            android:background="#8C9EFF"
+            style="@style/captureImageActivityButton"
             android:onClick="sendPicture"
             android:text="@string/send_photo"
             android:textAllCaps="true"
-            android:textColor="#E3F2FD"
-            android:visibility="invisible"/>
+            android:textColor="#E3F2FD"/>
     </LinearLayout>
 </LinearLayout>
