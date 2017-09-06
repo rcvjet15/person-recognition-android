@@ -106,6 +106,7 @@ public class CaptureImageActivity extends BaseAppActivity {
                                 mImageView.setRotation(0);
                                 break;
                             case ExifInterface.ORIENTATION_ROTATE_90:
+                                mImageView.setRotation(90);
                                 break;
                             case ExifInterface.ORIENTATION_ROTATE_180:
                                 mImageView.setRotation(180);

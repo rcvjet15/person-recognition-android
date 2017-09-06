@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "org.opencv.samples.facedetect"
-        minSdkVersion 17
+        minSdkVersion 11
         targetSdkVersion 25
 
         ndk {
