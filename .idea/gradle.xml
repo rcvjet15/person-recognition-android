@@ -10,7 +10,6 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/faceRecognition" />
             <option value="$PROJECT_DIR$/openCVLibrary320" />
-            <option value="$PROJECT_DIR$/openCVTutorial3CameraControl" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

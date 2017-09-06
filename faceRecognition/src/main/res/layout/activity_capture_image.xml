@@ -4,49 +4,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/activity_capture_image"
-    android:background="#536DFE"
-    android:weightSum="1">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/takePictureFromCamera"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="5dp"
-            android:background="#8C9EFF"
-            android:textColor="#E3F2FD"
-            android:textAllCaps="true"
-            android:onClick="takePicture"
-            android:text="@string/take_photo"/>
-    </RelativeLayout>
+    android:background="#82B1FF"
+    android:weightSum="100">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="386dp"
-        android:layout_weight="1.04">
+        android:layout_height="0dp"
+        android:layout_weight="87">
+
         <ImageView
             android:id="@+id/imageFromCamera"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.42" />
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="13"
+        android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
-        android:weightSum="1.0">
+        android:weightSum="100">
 
         <Button
             android:id="@+id/cancelSendBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_weight="0.48"
+            android:layout_weight="30"
+            android:layout_gravity="center_vertical"
             android:background="#8C9EFF"
             android:textColor="#E3F2FD"
             android:textAllCaps="true"
@@ -58,22 +43,35 @@
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="0.04"
+            android:layout_weight="2"
+            />
+
+        <ImageButton
+            android:id="@+id/takePictureFromCamera"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="36"
+            android:background="@drawable/circlebutton"
+            android:onClick="takePicture"/>
+
+        <!-- Spacer View -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="2"
             />
 
         <Button
             android:id="@+id/sendPictureBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_weight="0.48"
+            android:layout_weight="30"
+            android:layout_gravity="center_vertical"
             android:background="#8C9EFF"
             android:onClick="sendPicture"
             android:text="@string/send_photo"
             android:textAllCaps="true"
             android:textColor="#E3F2FD"
             android:visibility="invisible"/>
-
     </LinearLayout>
-
 </LinearLayout>
