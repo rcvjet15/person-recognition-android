@@ -44,6 +44,9 @@ public class CaptureImageActivity extends Activity {
         mButtonStart = (Button) this.findViewById(R.id.takePictureFromCamera);
         mButtonSend = (Button) this.findViewById(R.id.sendPictureBtn);
         mButtonCancel = (Button) this.findViewById(R.id.cancelSendBtn);
+
+        // Show camera onCreate
+        mButtonStart.performClick();
     }
 
     public void takePicture(View view){
@@ -82,15 +85,21 @@ public class CaptureImageActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK){
-            Bitmap mPhoto = BitmapFactory.decodeFile(mCurrentPhotoPath);
-            mImageView.setImageBitmap(mPhoto);
-            mButtonSend.setVisibility(View.VISIBLE);
-            mButtonCancel.setVisibility(View.VISIBLE);
-
-            Toast.makeText(this, "image taken!", Toast.LENGTH_SHORT).show();
-
+        if (requestCode == REQUEST_IMAGE_CAPTURE){
+            switch (resultCode){
+                case Activity.RESULT_OK:
+                    Bitmap mPhoto = BitmapFactory.decodeFile(mCurrentPhotoPath);
+                    mImageView.setImageBitmap(mPhoto);
+                    mButtonSend.setVisibility(View.VISIBLE);
+                    mButtonCancel.setVisibility(View.VISIBLE);
+                    break;
+                case Activity.RESULT_CANCELED:
+                    // Go to parent activity after back is clicked
+                    mButtonCancel.performClick();
+                    break;
+            }
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
