@@ -29,7 +29,7 @@ import java.util.Date;
  * Created by Robi on 04/09/2017.
  */
 
-public class CaptureImageActivity extends Activity {
+public class CaptureImageActivity extends BaseAppActivity {
 
     private String mCurrentPhotoPath;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -147,6 +147,4 @@ public class CaptureImageActivity extends Activity {
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
-
-
 }

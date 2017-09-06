@@ -59,7 +59,6 @@
             style="@style/captureImageActivityButton"
             android:onClick="sendPicture"
             android:text="@string/send_photo"
-            android:textAllCaps="true"
             android:textColor="#E3F2FD"/>
     </LinearLayout>
 </LinearLayout>

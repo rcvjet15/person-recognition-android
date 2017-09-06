@@ -17,7 +17,6 @@
         android:textColor="#E3F2FD"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:textAllCaps="true"
         />
     <ImageButton
         android:id="@+id/circleButton"
@@ -64,14 +63,12 @@
                 <Button
                     android:id="@+id/addButton"
                     style="@style/mainActivityButtonLeft"
-                    android:textAllCaps="true"
                     android:onClick="addUser"
                     android:text="@string/add_btn"/>
                 <Button
                     android:id="@+id/usersButton"
                     style="@style/mainActivityButtonLeft"
                     android:text="@string/users_btn"
-                    android:textAllCaps="true"
                     android:onClick="serverPart"/>
             </LinearLayout>
             <LinearLayout
@@ -82,12 +79,10 @@
                 <Button
                     android:id="@+id/galleryButton"
                     style="@style/mainActivityButtonRight"
-                    android:textAllCaps="true"
                     android:text="@string/gallery_btn"/>
                 <Button
                     android:id="@+id/aboutButton"
                     style="@style/mainActivityButtonRight"
-                    android:textAllCaps="true"
                     android:onClick="aboutUs"
                     android:text="@string/about_btn"/>
             </LinearLayout>

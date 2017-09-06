@@ -13,6 +13,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v4.graphics.BitmapCompat;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,7 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-public class MainActivity extends Activity {
+public class MainActivity extends BaseAppActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
-//    public void settings(View view){
+    //    public void settings(View view){
 //        Context context = this;
 //        Class destinationClass = SettingsActivity.class;
 //        Intent intent = new Intent(context, destinationClass);
