@@ -7,15 +7,40 @@ import android.net.Uri;
  */
 
 public class Settings {
-    private static Uri.Builder mUriBuilder = null;
+    public enum UriType { SERVER_ADDR, CREATE, RECOGNIZE, PEOPLE_API }
 
-    public static Uri.Builder getUriBuilder(){
-        if (mUriBuilder  == null){
-            mUriBuilder  = new Uri.Builder();
-            mUriBuilder .scheme("http")
-                    .encodedAuthority("192.168.1.92:5000")
-                    .appendPath("recognize");
+    private static String sScheme = "http";
+    private static String sAddress = "192.168.1.92";
+    private static int sPort = 5000;
+    private static String sRestApiSubPath = "people-api";
+    private static String sRecognizePath = "recognize";
+    private static String sCreatePath = "create";
+
+    public static Uri UriFactory(UriType uriType){
+        Uri.Builder uriBuilder = new Uri.Builder()
+                .scheme(sScheme)
+                .encodedAuthority(String.format("%s:%d", sAddress, sPort);
+
+        switch (uriType){
+            case SERVER_ADDR: {
+                break;
+            }
+            case PEOPLE_API: {
+                uriBuilder.appendPath(sRestApiSubPath);
+                break;
+            }
+            case CREATE: {
+                uriBuilder.appendPath(sRestApiSubPath)
+                        .appendPath(sCreatePath);
+                break;
+            }
+            case RECOGNIZE: {
+                uriBuilder.appendPath(sRestApiSubPath)
+                        .appendPath(sRecognizePath);
+                break;
+            }
         }
-        return mUriBuilder ;
+
+        return uriBuilder.build();
     }
 }
