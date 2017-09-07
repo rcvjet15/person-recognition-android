@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="87">
+        android:layout_weight="85">
 
         <ImageView
             android:id="@+id/imageFromCamera"
@@ -21,9 +21,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="13"
+        android:layout_weight="17"
         android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
+        android:background="@drawable/capture_image_actions_layout"
         android:weightSum="100">
 
         <Button
@@ -42,10 +42,11 @@
         <ImageButton
             android:id="@+id/takePictureFromCamera"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="65dp"
             android:layout_weight="36"
+            android:layout_marginTop="12dp"
             android:background="@drawable/circlebutton"
-            android:onClick="takePicture"/>
+            android:onClick="takePicture" />
 
         <!-- Spacer View -->
         <View

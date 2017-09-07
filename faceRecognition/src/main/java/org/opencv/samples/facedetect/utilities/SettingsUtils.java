@@ -1,4 +1,4 @@
-package org.opencv.samples.facedetect;
+package org.opencv.samples.facedetect.utilities;
 
 import android.net.Uri;
 
@@ -6,12 +6,12 @@ import android.net.Uri;
  * Created by Robi on 04/09/2017.
  */
 
-public class Settings {
+public class SettingsUtils {
     public enum UriType { SERVER_ADDR, CREATE, RECOGNIZE, PEOPLE_API }
 
     private static String sScheme = "http";
     private static String sAddress = "192.168.1.92";
-    private static int sPort = 5000;
+    private static int sPort = 4000;
     private static String sRestApiSubPath = "people-api";
     private static String sRecognizePath = "recognize";
     private static String sCreatePath = "create";
@@ -19,7 +19,7 @@ public class Settings {
     public static Uri UriFactory(UriType uriType){
         Uri.Builder uriBuilder = new Uri.Builder()
                 .scheme(sScheme)
-                .encodedAuthority(String.format("%s:%d", sAddress, sPort);
+                .encodedAuthority(String.format("%s:%d", sAddress, sPort));
 
         switch (uriType){
             case SERVER_ADDR: {
@@ -37,6 +37,9 @@ public class Settings {
             case RECOGNIZE: {
                 uriBuilder.appendPath(sRestApiSubPath)
                         .appendPath(sRecognizePath);
+                break;
+            }
+            default: {
                 break;
             }
         }
