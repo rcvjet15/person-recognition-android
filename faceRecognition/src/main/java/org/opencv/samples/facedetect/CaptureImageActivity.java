@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.MutableContextWrapper;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,17 +31,26 @@ import org.opencv.samples.facedetect.utilities.SettingsUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by Robi on 04/09/2017.
@@ -171,12 +181,18 @@ public class CaptureImageActivity extends BaseAppActivity {
 
     private class RecognizeTask extends AsyncTask<Bitmap, String, String> {
 
+        private final String SUCCESS_MSG = "Success!";
+        private final String RECOGNIZE_IMAGE_SUBMIT_NAME = "file";
         private String mErrorMsg;
         private URL mUrl;
-        private HttpURLConnection mUrlConnection;
+        private HttpURLConnection mHttpUrlConnection;
         private DataOutputStream mRequest;
         private ProgressDialog mProgressDialog;
         private Activity mCallingActivity;
+
+        private String mCrlf = "\r\n";
+        private String mTwoHyphens = "--";
+        private String mBoundary = "*****";
 
         public RecognizeTask(Activity activity){
             mCallingActivity = activity;
@@ -192,25 +208,48 @@ public class CaptureImageActivity extends BaseAppActivity {
         @Override
         protected String doInBackground(Bitmap... params) {
             try {
-                publishProgress("Initializing URL connection...");
-                initializeUrlConnection();
                 publishProgress("Checking server availability...");
 
                 // Throws not found exception if server is not available
                 checkServerAvailability();
 
-                Thread.sleep(5000);
-            }catch (Resources.NotFoundException e){
+                publishProgress("Setting up headers...");
+                setupPostHeaders();
+
+                publishProgress("Setting up body...");
+                setupPostBody();
+
+                publishProgress("Sending request...");
+                InputStream responseStream = new BufferedInputStream(mHttpUrlConnection.getInputStream());
+                BufferedReader responseStreamReader = new BufferedReader(new InputStreamReader(responseStream));
+
+                publishProgress("Parsing server response...");
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((line = responseStreamReader.readLine()) != null) {
+                    stringBuilder.append(line).append("\n");
+                }
+                responseStreamReader.close();
+                String response = stringBuilder.toString();
+                return response;
+            }
+            catch (Resources.NotFoundException e){
                 return "Server is not available.";
-            }catch (MalformedURLException e){
+            }
+            catch (MalformedURLException e){
                 return "Recognize URL is invalid.";
-            }catch (InterruptedException e){
-                return "Unable to open HTTP connection.";
-            }catch (IOException e){
+            }
+            catch (IOException e){
+                return String.format("%s\n%s", e.getMessage(), "Server Error.");
+            }
+            catch (Exception e){
                 return e.getMessage();
             }
-
-            return "Success";
+            finally {
+                if (mHttpUrlConnection != null){
+                    mHttpUrlConnection.disconnect();
+                }
+            }
         }
 
         @Override
@@ -223,7 +262,7 @@ public class CaptureImageActivity extends BaseAppActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             hideProgressDialog();
-            if (result != "Success"){
+            if (result != SUCCESS_MSG){
                 showAlertDialog(result, "Error");
             }
         }
@@ -235,31 +274,62 @@ public class CaptureImageActivity extends BaseAppActivity {
             hideProgressDialog();
         }
 
-        private void initializeUrlConnection() throws MalformedURLException, IOException {
+        private void setupPostHeaders() throws MalformedURLException, IOException {
             mUrl = new URL(SettingsUtils.UriFactory(SettingsUtils.UriType.RECOGNIZE).toString());
-            mUrlConnection = (HttpURLConnection) mUrl.openConnection();
-            mUrlConnection.setReadTimeout(10000);
-            mUrlConnection.setUseCaches(false);
-            mUrlConnection.setDoOutput(true);
 
-            mUrlConnection.setRequestMethod("POST");
-            mUrlConnection.setRequestProperty("Connection", "Keep-Alive");
-            mUrlConnection.setRequestProperty("Cache-Control", "no-cache");
-            mUrlConnection.setRequestProperty("Content-Type", "multipart/form-data;");
+            mHttpUrlConnection = (HttpURLConnection) mUrl.openConnection();
+            mHttpUrlConnection.setUseCaches(false);
+            mHttpUrlConnection.setDoOutput(true);
+            mHttpUrlConnection.setRequestMethod("POST");
+            mHttpUrlConnection.setRequestProperty("Connection", "Keep-Alive");
+            mHttpUrlConnection.setRequestProperty("Cache-Control", "no-cache");
+            mHttpUrlConnection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + mBoundary);
+        }
+
+        private void setupPostBody() throws IOException{
+            File file = new File(mCurrentPhotoPath);
+            byte[] imageByteArray = convertImageToByteArray(mPhoto);
+
+            mRequest = new DataOutputStream(mHttpUrlConnection.getOutputStream());
+            mRequest.writeBytes(mTwoHyphens + mBoundary + mCrlf);
+            mRequest.writeBytes("Content-Disposition: form-data; name=\"" + RECOGNIZE_IMAGE_SUBMIT_NAME + "\";filename=" + file.getName() + ";" + mCrlf);
+            mRequest.writeBytes("Content-Type: image/jpeg" + mCrlf);
+            mRequest.writeBytes(mCrlf);
+            mRequest.write(imageByteArray);
+            mRequest.writeBytes(mCrlf);
+            mRequest.writeBytes(mTwoHyphens + mBoundary + mTwoHyphens);
+            mRequest.flush();
+            mRequest.close();
+        }
+
+        private byte[] convertImageToByteArray(Bitmap img){
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            mPhoto.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            return bos.toByteArray();
         }
 
         private void checkServerAvailability() throws Resources.NotFoundException {
+            HttpURLConnection conn = null;
+            Boolean available = null;
             try{
+                // Test with this URL because RECOGNIZE uri takes POST request
                 URL url = new URL(SettingsUtils.UriFactory(SettingsUtils.UriType.PEOPLE_API).toString());
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setConnectTimeout(5000);
                 conn.connect();
-                if (conn.getResponseCode() != 200){
+                available = (conn.getResponseCode() == 200);
+
+            }
+            catch (IOException e){
+                available = false;
+            }
+            finally {
+                if (conn != null){
                     conn.disconnect();
-                    throw new Resources.NotFoundException("Server cannot be reached.");
                 }
-                conn.disconnect();
-            }catch (IOException e){
+            }
+
+            if (!available){
                 throw new Resources.NotFoundException("Server cannot be reached.");
             }
         }
