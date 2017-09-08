@@ -10,6 +10,7 @@ import android.content.MutableContextWrapper;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.media.Image;
@@ -125,26 +126,32 @@ public class CaptureImageActivity extends BaseAppActivity {
                     mPhoto = BitmapFactory.decodeFile(mCurrentPhotoPath);
 //                    BitmapDrawable bd = new BitmapDrawable(getResources(), mPhoto);
 //                    mImageView.setBackgroundDrawable(bd);
-                    mImageView.setImageBitmap(mPhoto);
+
 
                     try{
+                        float degrees = 0;
                         // Check image rotation and rotate it so it is always vertical
                         ExifInterface exif = new ExifInterface(mCurrentPhotoPath);
                         int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
                         switch(exifOrientation){
                             case ExifInterface.ORIENTATION_NORMAL:
-                                mImageView.setRotation(0);
+                                degrees = 0;
                                 break;
                             case ExifInterface.ORIENTATION_ROTATE_90:
-                                mImageView.setRotation(90);
+                                degrees = 90;
                                 break;
                             case ExifInterface.ORIENTATION_ROTATE_180:
-                                mImageView.setRotation(180);
+                                degrees = 180;
                                 break;
                             case ExifInterface.ORIENTATION_ROTATE_270:
-                                mImageView.setRotation(270);
+                                degrees = 270;
                                 break;
                         }
+
+                        Matrix matrix = new Matrix();
+                        matrix.postRotate(degrees);
+                        mPhoto = Bitmap.createBitmap(mPhoto, 0, 0, mPhoto.getWidth(), mPhoto.getHeight(), matrix, true);
+                        mImageView.setImageBitmap(mPhoto);
                     }
                     catch (IOException e){
 
