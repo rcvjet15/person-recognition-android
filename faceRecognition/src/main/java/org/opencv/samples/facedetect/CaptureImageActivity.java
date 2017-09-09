@@ -124,10 +124,6 @@ public class CaptureImageActivity extends BaseAppActivity {
             switch (resultCode){
                 case Activity.RESULT_OK:
                     mPhoto = BitmapFactory.decodeFile(mCurrentPhotoPath);
-//                    BitmapDrawable bd = new BitmapDrawable(getResources(), mPhoto);
-//                    mImageView.setBackgroundDrawable(bd);
-
-
                     try{
                         float degrees = 0;
                         // Check image rotation and rotate it so it is always vertical
@@ -231,6 +227,7 @@ public class CaptureImageActivity extends BaseAppActivity {
                 BufferedReader responseStreamReader = new BufferedReader(new InputStreamReader(responseStream));
 
                 publishProgress("Parsing server response...");
+
                 String line = "";
                 StringBuilder stringBuilder = new StringBuilder();
                 while ((line = responseStreamReader.readLine()) != null) {
