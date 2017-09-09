@@ -3,24 +3,18 @@ package org.opencv.samples.facedetect;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.MutableContextWrapper;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.PersistableBundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.widget.Button;
@@ -31,33 +25,24 @@ import android.widget.Toast;
 import org.opencv.samples.facedetect.utilities.SettingsUtils;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.InterruptedIOException;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Created by Robi on 04/09/2017.
  */
 
-public class CaptureImageActivity extends BaseAppActivity {
+public class RecognizeActivity extends BaseAppActivity {
 
     private Bitmap mPhoto;
     private String mCurrentPhotoPath;
@@ -71,7 +56,7 @@ public class CaptureImageActivity extends BaseAppActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_capture_image);
+        setContentView(R.layout.activity_recognize);
 
         mImageView = (ImageView) this.findViewById(R.id.imageFromCamera);
         mButtonStart = (ImageButton) this.findViewById(R.id.takePictureFromCamera);
@@ -274,7 +259,7 @@ public class CaptureImageActivity extends BaseAppActivity {
         @Override
         protected void onCancelled() {
             super.onCancelled();
-            Toast.makeText(CaptureImageActivity.this, mErrorMsg, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mCallingActivity, mErrorMsg, Toast.LENGTH_SHORT).show();
             hideProgressDialog();
         }
 
