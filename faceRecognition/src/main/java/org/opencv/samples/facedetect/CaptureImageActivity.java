@@ -322,7 +322,7 @@ public class CaptureImageActivity extends BaseAppActivity {
                 // Test with this URL because RECOGNIZE uri takes POST request
                 URL url = new URL(SettingsUtils.UriFactory(SettingsUtils.UriType.PEOPLE_API).toString());
                 conn = (HttpURLConnection) url.openConnection();
-                conn.setConnectTimeout(5000);
+                conn.setConnectTimeout(10000);
                 conn.connect();
                 available = (conn.getResponseCode() == 200);
 
@@ -341,12 +341,11 @@ public class CaptureImageActivity extends BaseAppActivity {
             }
         }
 
-
         private void initializeProgressDialog(){
             mProgressDialog = new ProgressDialog(mCallingActivity);
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.setTitle("Recognition");
-            mProgressDialog.setMessage("Please wait...");
+            mProgressDialog.setTitle("Please wait...");
+            mProgressDialog.setMessage("Loading...");
 
             mProgressDialog.setIndeterminate(true); // Loading amount is not measured
             mProgressDialog.setCanceledOnTouchOutside(false);

@@ -43,9 +43,9 @@
             android:id="@+id/takePictureFromCamera"
             android:layout_width="0dp"
             android:layout_height="65dp"
-            android:layout_weight="36"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/circlebutton"
+            android:layout_weight="30"
+            android:layout_marginTop="13dp"
+            android:background="@drawable/take_picture_button"
             android:onClick="takePicture" />
 
         <!-- Spacer View -->

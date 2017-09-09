@@ -19,12 +19,11 @@
         android:layout_marginBottom="10dp"
         />
     <ImageButton
-        android:id="@+id/circleButton"
+        android:id="@+id/recognizeBtn"
         android:layout_width="220dp"
         android:layout_height="220dp"
-        android:src="@drawable/circlebutton"
+        android:background="@drawable/take_picture_button"
         android:scaleType="centerCrop"
-        android:background="#536DFE"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
