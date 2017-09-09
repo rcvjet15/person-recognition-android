@@ -38,6 +38,9 @@ public class Person {
             else if (name.equals("status")){
                 person.setStatus(jsonReader.nextInt());
             }
+            else{
+                jsonReader.skipValue();
+            }
         }
 
         jsonReader.endObject();

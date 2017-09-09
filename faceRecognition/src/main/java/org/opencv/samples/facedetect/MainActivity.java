@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import org.opencv.samples.facedetect.utilities.RecognizeJsonUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -33,7 +35,7 @@ public class MainActivity extends BaseAppActivity {
 
     public void faceRecognition(View view){
         Context context = this;
-        Class destinationClass = CaptureImageActivity.class;
+        Class destinationClass = RecognizeActivity.class;
         Intent intent = new Intent(context, destinationClass);
         startActivity(intent);
     }

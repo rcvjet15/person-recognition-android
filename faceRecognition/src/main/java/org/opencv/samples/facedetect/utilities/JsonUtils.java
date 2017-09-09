@@ -19,68 +19,10 @@ import java.util.List;
 
 public abstract class JsonUtils {
 
-    public abstract List<IReponseMessage> readJsonStream(InputStream responseStream) throws IOException;
+    public abstract List<IResponseMessage> readJsonStream(InputStream responseStream) throws IOException;
 
-    public abstract List<IReponseMessage> readMessagesArray(JsonReader reader) throws IOException;
+    protected abstract List<IResponseMessage> readMessagesArray(JsonReader reader) throws IOException;
 
-    public abstract IReponseMessage readMessage(JsonReader reader) throws IOException;
+    protected abstract IResponseMessage readMessage(JsonReader reader) throws IOException;
 }
 
-
-// Class for parsing JSON received from server in CaptureImageActivity
-public class RecognizeJsonUtils extends JsonUtils{
-
-    @Override
-    public List<IResponseMessage> readJsonStream(InputStream responseStream) throws IOException{
-        JsonReader jsonReader = new JsonReader(new InputStreamReader(responseStream, "UTF-8"));
-
-        try{
-            return readMessagesArray(jsonReader);
-        }
-        finally {
-            jsonReader.close();
-        }
-    }
-
-    @Override
-    public List<IResponseMessage> readMessagesArray(JsonReader reader) throws IOException{
-        List<IResponseMessage> messages = new ArrayList<IResponseMessage>();
-
-        reader.beginArray();
-        while (reader.hasNext()){
-            messages.add(readMessage(reader));
-        }
-        reader.endArray();
-        return messages;
-    }
-
-    public IResponseMessage readMessage(JsonReader reader) throws IOException{
-        int status = -100;
-        Person person = null;
-        String imageBase64 = null;
-
-        reader.beginObject();
-        while (reader.hasNext()){
-            String name = reader.nextName();
-
-            if (name.equals("person")){
-                person = Person.createFromJson(reader);
-            }
-            else if (name.equals("profile-pic")){
-                imageBase64 = reader.nextString();
-            }
-            else if (name.equals("status")){
-                status = reader.nextInt();
-            }
-            else {
-                reader.skipValue();
-            }
-
-            reader.endObject();
-            return new ResponseMessageRecognize(person, imageBase64, status);
-        }
-    }
-
-
-
-}

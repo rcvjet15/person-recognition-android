@@ -16,12 +16,16 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.opencv.samples.facedetect.utilities.IResponseMessage;
+import org.opencv.samples.facedetect.utilities.RecognizeJsonUtils;
+import org.opencv.samples.facedetect.utilities.ResponseMessageRecognize;
 import org.opencv.samples.facedetect.utilities.SettingsUtils;
 
 import java.io.BufferedInputStream;
@@ -36,7 +40,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Robi on 04/09/2017.
@@ -167,7 +173,7 @@ public class RecognizeActivity extends BaseAppActivity {
         return image;
     }
 
-    private class RecognizeTask extends AsyncTask<Bitmap, String, String> {
+    private class RecognizeTask extends AsyncTask<Bitmap, String, IResponseMessage> {
 
         private final String SUCCESS_MSG = "Success!";
         private final String RECOGNIZE_IMAGE_SUBMIT_NAME = "file";
@@ -177,6 +183,7 @@ public class RecognizeActivity extends BaseAppActivity {
         private DataOutputStream mRequest;
         private ProgressDialog mProgressDialog;
         private Activity mCallingActivity;
+        private List<IResponseMessage> mResponseMessageList;
 
         private String mCrlf = "\r\n";
         private String mTwoHyphens = "--";
@@ -194,7 +201,7 @@ public class RecognizeActivity extends BaseAppActivity {
         }
 
         @Override
-        protected String doInBackground(Bitmap... params) {
+        protected IResponseMessage doInBackground(Bitmap... params) {
             try {
                 publishProgress("Checking server availability...");
 
@@ -209,30 +216,29 @@ public class RecognizeActivity extends BaseAppActivity {
 
                 publishProgress("Sending request...");
                 InputStream responseStream = new BufferedInputStream(mHttpUrlConnection.getInputStream());
-                BufferedReader responseStreamReader = new BufferedReader(new InputStreamReader(responseStream));
 
                 publishProgress("Parsing server response...");
+                RecognizeJsonUtils jsonUtils = new RecognizeJsonUtils();
+                List<IResponseMessage> messageList = jsonUtils.readJsonStream(responseStream);
 
-                String line = "";
-                StringBuilder stringBuilder = new StringBuilder();
-                while ((line = responseStreamReader.readLine()) != null) {
-                    stringBuilder.append(line).append("\n");
+                if (messageList.size() > 0){
+                    return messageList.get(0);
                 }
-                responseStreamReader.close();
-                String response = stringBuilder.toString();
-                return response;
+                else{
+                    throw new Exception("Server returned empty response.");
+                }
             }
             catch (Resources.NotFoundException e){
-                return "Server is not available.";
+                return new ResponseMessageRecognize(null, null, -1, "Server is not available.");
             }
             catch (MalformedURLException e){
-                return "Recognize URL is invalid.";
+                return new ResponseMessageRecognize(null, null, -1, "Recognize URL is invalid.");
             }
             catch (IOException e){
-                return String.format("%s\n%s", e.getMessage(), "Server Error.");
+                return new ResponseMessageRecognize(null, null, -1, String.format("%s\n%s", e.getMessage(), "Server Error."));
             }
             catch (Exception e){
-                return e.getMessage();
+                return new ResponseMessageRecognize(null, null, -1, String.format("%s\n%s", e.getMessage(), "Unknown Error."));
             }
             finally {
                 if (mHttpUrlConnection != null){
@@ -248,11 +254,27 @@ public class RecognizeActivity extends BaseAppActivity {
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(IResponseMessage result) {
             super.onPostExecute(result);
             hideProgressDialog();
-            if (result != SUCCESS_MSG){
-                showAlertDialog(result, "Error");
+            ResponseMessageRecognize responseMsgObj = (ResponseMessageRecognize)result;
+            if (responseMsgObj.getStatus() != 1){
+                showAlertDialog(responseMsgObj.getResponseMsg(), "Error");
+                return;
+            }
+
+            try{
+                if (responseMsgObj.getImageBase64() != null && responseMsgObj.getImageBase64().length() > 0){
+                    byte[] decodedString = Base64.decode(responseMsgObj.getImageBase64(), Base64.DEFAULT);
+                    Bitmap decodeByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    mImageView.setImageBitmap(decodeByte);
+                }
+                else{
+                    Toast.makeText(mCallingActivity, "Server did not return profile picture.", Toast.LENGTH_LONG).show();
+                }
+
+            }catch (Exception e){
+                Toast.makeText(mCallingActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
 

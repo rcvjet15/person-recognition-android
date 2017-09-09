@@ -10,11 +10,14 @@ public class ResponseMessageRecognize implements IResponseMessage{
     private Person mPerson;
     private String mImageBase64;
     private int mStatus;
+    private String mResponseMsg;
 
-    public ResponseMessageRecognize(Person person, String imageBase64, int status){
+
+    public ResponseMessageRecognize(Person person, String imageBase64, int status, String responseMsg){
         mPerson = person;
         mImageBase64 = imageBase64;
         mStatus = status;
+        mResponseMsg = responseMsg;
     }
 
     public Person getPerson(){
@@ -29,4 +32,7 @@ public class ResponseMessageRecognize implements IResponseMessage{
         return mStatus;
     }
 
+    public String getResponseMsg(){
+        return mResponseMsg;
+    }
 }

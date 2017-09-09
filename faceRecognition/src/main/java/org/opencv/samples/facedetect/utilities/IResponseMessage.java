@@ -5,4 +5,5 @@ package org.opencv.samples.facedetect.utilities;
  */
 
 public interface IResponseMessage {
+
 }
