@@ -280,7 +280,7 @@ public class RecognizeActivity extends BaseAppActivity {
             // Show alert dialog if status is not 1
             ResponseMessageRecognize responseMsgObj = (ResponseMessageRecognize)result;
             if (responseMsgObj.getStatus() != 1){
-                showAlertDialog(responseMsgObj.getResponseMsg(), "Error");
+                showAlertDialog(mCallingActivity, responseMsgObj.getResponseMsg(), "Error");
             }
 
             // Callback method, pass result to calling activity
@@ -290,7 +290,9 @@ public class RecognizeActivity extends BaseAppActivity {
         @Override
         protected void onCancelled() {
             super.onCancelled();
-            Toast.makeText(mCallingActivity, mErrorMsg, Toast.LENGTH_SHORT).show();
+            if (mErrorMsg != null && mErrorMsg.length() > 0)
+                Toast.makeText(mCallingActivity, mErrorMsg, Toast.LENGTH_SHORT).show();
+
             hideProgressDialog();
         }
 
@@ -359,6 +361,14 @@ public class RecognizeActivity extends BaseAppActivity {
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             mProgressDialog.setTitle("Please wait...");
             mProgressDialog.setMessage("Loading...");
+            mProgressDialog.setButton(ProgressDialog.BUTTON_NEUTRAL, "Cancel",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            stopTask();
+                            dialog.dismiss();
+                        }
+                    });
 
             mProgressDialog.setIndeterminate(true); // Loading amount is not measured
             mProgressDialog.setCanceledOnTouchOutside(false);
@@ -374,23 +384,6 @@ public class RecognizeActivity extends BaseAppActivity {
             if (this != null && !isCancelled()){
                 this.cancel(true);
             }
-        }
-
-        private void showAlertDialog(String msg, String title){
-            AlertDialog dialog = new AlertDialog.Builder(mCallingActivity).create();
-            if (title != null && title.length() > 0){
-                dialog.setTitle(title);
-            }
-
-            dialog.setMessage(msg);
-            dialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            dialog.show();
         }
     }
 }

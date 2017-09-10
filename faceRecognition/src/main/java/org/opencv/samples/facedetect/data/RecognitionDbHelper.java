@@ -39,11 +39,11 @@ public class RecognitionDbHelper extends SQLiteOpenHelper {
                 PersonEntry.COLUMN_LAST_NAME + " TEXT NOT NULL, " +
                 PersonEntry.COLUMN_AGE + " INTEGER, " +
                 PersonEntry.COLUMN_EMAIL + " TEXT NOT NULL, " +
-                PersonEntry.COLUMN_PROFILE_PIC + " BLOB NOT NULL" +
+                PersonEntry.COLUMN_PROFILE_PIC + " BLOB NOT NULL, " +
                 PersonEntry.COLUMN_STATUS + " INTEGER, " +
 
                 // Store datetime as long value. To retrieve it successfully use cursor.getLong() because of int value overflow.
-                PersonEntry.COLUMN_VALID_FROM + " INT NOT NULL";
+                PersonEntry.COLUMN_VALID_FROM + " INT NOT NULL)";
 
         db.execSQL(SQL_CREATE_PERSON_TABLE);
     }

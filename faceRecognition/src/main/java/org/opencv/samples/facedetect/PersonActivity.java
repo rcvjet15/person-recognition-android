@@ -4,6 +4,7 @@ import android.animation.FloatEvaluator;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -107,17 +108,23 @@ public class PersonActivity extends BaseAppActivity {
     }
 
     public void insert(View view){
-        mDb = mDbHelper.getWritableDatabase();
+        try{
+            mDb = mDbHelper.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(PersonEntry.COLUMN_FIRST_NAME, mPerson.getFirstName());
-        values.put(PersonEntry.COLUMN_LAST_NAME, mPerson.getLastName());
-        values.put(PersonEntry.COLUMN_AGE, mPerson.getAge());
-        values.put(PersonEntry.COLUMN_EMAIL, mPerson.getEmail());
-        values.put(PersonEntry.COLUMN_STATUS, mPerson.getStatus());
-        values.put(PersonEntry.COLUMN_PROFILE_PIC, mPerson.convertImageBase64ToByteArray());
-        values.put(PersonEntry.COLUMN_VALID_FROM, mPerson.getValidFrom().getTime());
+            ContentValues values = new ContentValues();
+            values.put(PersonEntry.COLUMN_FIRST_NAME, mPerson.getFirstName());
+            values.put(PersonEntry.COLUMN_LAST_NAME, mPerson.getLastName());
+            values.put(PersonEntry.COLUMN_AGE, mPerson.getAge());
+            values.put(PersonEntry.COLUMN_EMAIL, mPerson.getEmail());
+            values.put(PersonEntry.COLUMN_STATUS, mPerson.getStatus());
+            values.put(PersonEntry.COLUMN_PROFILE_PIC, mPerson.convertImageBase64ToByteArray());
+            values.put(PersonEntry.COLUMN_VALID_FROM, System.currentTimeMillis());
+            long newRowId = mDb.insert(PersonEntry.TABLE_NAME, null, values);
 
-        long newRowId = mDb.insert(PersonEntry.TABLE_NAME, null, values);
+            Toast.makeText(this, String.format("Successfully created %s %s", mPerson.getFirstName(), mPerson.getLastName()), Toast.LENGTH_SHORT).show();
+        }
+        catch (SQLiteException e){
+
+        }
     }
 }

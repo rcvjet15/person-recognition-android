@@ -1,6 +1,9 @@
 package org.opencv.samples.facedetect;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -53,5 +56,23 @@ public class BaseAppActivity extends Activity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+
+    protected void showAlertDialog(Context context, String msg, String title){
+        AlertDialog dialog = new AlertDialog.Builder(context).create();
+        if (title != null && title.length() > 0){
+            dialog.setTitle(title);
+        }
+
+        dialog.setMessage(msg);
+        dialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        dialog.show();
     }
 }
