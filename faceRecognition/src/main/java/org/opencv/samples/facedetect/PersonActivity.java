@@ -122,9 +122,16 @@ public class PersonActivity extends BaseAppActivity {
             long newRowId = mDb.insert(PersonEntry.TABLE_NAME, null, values);
 
             Toast.makeText(this, String.format("Successfully created %s %s", mPerson.getFirstName(), mPerson.getLastName()), Toast.LENGTH_SHORT).show();
+
+            /*
+            * Go to MainActivity with destroying all activities between destination and this
+             */
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
         catch (SQLiteException e){
-
+            showAlertDialog(this, e.getMessage(), "Database Error");
         }
     }
 }
