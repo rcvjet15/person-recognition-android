@@ -10,7 +10,7 @@ public class SettingsUtils {
     public enum UriType { SERVER_ADDR, CREATE, RECOGNIZE, PEOPLE_API }
 
     private static String sScheme = "http";
-    private static String sAddress = "192.168.1.92";
+    private static String sAddress = "192.168.1.30";
     private static int sPort = 4000;
     private static String sRestApiSubPath = "people-api";
     private static String sRecognizePath = "recognize";

@@ -106,6 +106,7 @@ public class RecognizeActivity extends BaseAppActivity {
 
     }
 
+    // Called after recognize task is finished
     private void onBackgroundTaskCompleted(ResponseMessageRecognize result){
         if (result.getStatus() == 1){
             Person recognizedPerson =  result.getPerson();
@@ -121,6 +122,7 @@ public class RecognizeActivity extends BaseAppActivity {
             Context context = this;
             Class destinationClass = PersonActivity.class;
             Intent intent = new Intent(context, destinationClass);
+            intent.putExtra(Intent.ACTION_INSERT, recognizedPerson);
             startActivity(intent);
         }
     }

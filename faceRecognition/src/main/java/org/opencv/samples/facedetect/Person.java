@@ -2,6 +2,8 @@ package org.opencv.samples.facedetect;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.JsonReader;
@@ -14,7 +16,8 @@ import java.sql.Timestamp;
  * Created by Robi on 09/09/2017.
  */
 
-public class Person {
+// Implements Parcelable interface that allows to pass Person object in Intent
+public class Person implements Parcelable {
 
     public static Person createFromJson(JsonReader jsonReader) throws IOException{
         Person person = new Person();
@@ -113,7 +116,7 @@ public class Person {
     }
 
     public void setImageBase64(String imageBase64){
-        mImageBase64 = mImageBase64;
+        mImageBase64 = imageBase64;
     }
 
     public int getStatus(){
@@ -142,5 +145,46 @@ public class Person {
 
     public Person(){
         mValidFrom = new Timestamp(System.currentTimeMillis());
+    }
+
+
+    // Parceable interface implemented methods
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mFirstName);
+        dest.writeString(mLastName);
+        dest.writeInt(mAge);
+        dest.writeString(mEmail);
+        dest.writeString(mFaceEncoding);
+        dest.writeString(mImageBase64);
+        dest.writeInt(mStatus);
+    }
+
+    public static final Parcelable.Creator<Person> CREATOR =
+            new Parcelable.Creator<Person>() {
+                public Person createFromParcel(Parcel in){
+                    return new Person(in);
+                }
+
+                @Override
+                public Person[] newArray(int size) {
+                    return new Person[size];
+                }
+            };
+
+    public Person(Parcel in){
+        // Must be in same order as in writeToParcel
+        mFirstName = in.readString();
+        mLastName = in.readString();
+        mAge = in.readInt();
+        mEmail = in.readString();
+        mFaceEncoding = in.readString();
+        mImageBase64 = in.readString();
+        mStatus = in.readInt();
     }
 }

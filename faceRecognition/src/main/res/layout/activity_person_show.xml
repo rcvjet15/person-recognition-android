@@ -9,10 +9,20 @@
         android:layout_height="0dp"
         android:layout_weight="50">
         <ImageView
-            android:id="@+id/profilePic"
+            android:id="@+id/profilePicShow"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/subBgColor"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -23,21 +33,25 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/firstName"
+                android:id="@+id/firstNameShow"
                 style="@style/textViewPersonData"
                 android:text="First Name: "/>
             <TextView
-                android:id="@+id/lastName"
+                android:id="@+id/lastNameShow"
                 style="@style/textViewPersonData"
                 android:text="Last Name: "/>
             <TextView
-                android:id="@+id/age"
+                android:id="@+id/ageShow"
                 style="@style/textViewPersonData"
                 android:text="Age: "/>
             <TextView
-                android:id="@+id/email"
+                android:id="@+id/emailShow"
                 style="@style/textViewPersonData"
                 android:text="E-mail: "/>
+            <TextView
+                android:id="@+id/faceEncodingShow"
+                style="@style/textViewPersonData"
+                android:text="Face encoding: "/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
