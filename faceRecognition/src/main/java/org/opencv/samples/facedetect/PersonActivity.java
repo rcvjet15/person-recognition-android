@@ -94,11 +94,11 @@ public class PersonActivity extends BaseAppActivity {
         mPerson = extras.getParcelable(Intent.ACTION_INSERT);
 
         mImageView.setImageBitmap(mPerson.convertImageBase64ToBitmap());
-        mFirstName.setText(String.format("First name: %s", mPerson.getFirstName()));
-        mLastName.setText(String.format("Last name: %s", mPerson.getLastName()));
-        mAge.setText(String.format("Age: %d", mPerson.getAge()));
-        mEmail.setText(String.format("Email: %s", mPerson.getEmail()));
-        mFaceEncoding.setText(String.format("Face encoding: %s", mPerson.getFaceEncoding()));
+        mFirstName.setText(String.format("%s %s", mFirstName.getText(), mPerson.getFirstName()));
+        mLastName.setText(String.format("%s %s", mLastName.getText(), mPerson.getLastName()));
+        mAge.setText(String.format("%s %d", mAge.getText(), mPerson.getAge()));
+        mEmail.setText(String.format("%s %s", mEmail.getText(), mPerson.getEmail()));
+        mFaceEncoding.setText(String.format("%s %s", mFaceEncoding.getText(), mPerson.getFaceEncoding()));
 
         this.getActionBar().setTitle(String.format("%s %s", mPerson.getFirstName(), mPerson.getLastName()));
     }
@@ -121,11 +121,14 @@ public class PersonActivity extends BaseAppActivity {
             values.put(PersonEntry.COLUMN_VALID_FROM, System.currentTimeMillis());
             long newRowId = mDb.insert(PersonEntry.TABLE_NAME, null, values);
 
-            Toast.makeText(this, String.format("Successfully created %s %s", mPerson.getFirstName(), mPerson.getLastName()), Toast.LENGTH_SHORT).show();
+            if (newRowId > 0){
+                Toast.makeText(this, String.format("Successfully created %s %s", mPerson.getFirstName(), mPerson.getLastName()), Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(this, String.format("Error creating %s %s", mPerson.getFirstName(), mPerson.getLastName()), Toast.LENGTH_SHORT).show();
+            }
 
-            /*
-            * Go to MainActivity with destroying all activities between destination and this
-             */
+            // Go to MainActivity with destroying all activities between destination and this
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

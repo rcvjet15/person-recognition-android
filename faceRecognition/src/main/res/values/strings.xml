@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Person Recognition</string>
+    <string name="app_name">Facial Recognition</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
 
@@ -9,13 +9,36 @@
     <string name="about_btn">About Us</string>
     <string name="gallery_btn">Gallery</string>
 
-    <!-- Capture image activity -->
-    <string name="capture_image_label">Capture Image</string>
+    <!-- Recognize activity -->
+    <string name="recognize_label">Capture Image</string>
     <string name="take_photo">Take Photo</string>
     <string name="send_photo">Send</string>
 
+    <!-- Person activity -->
+    <string name="show_first_name_label">First name:</string>
+    <string name="show_last_name_label">Last name:</string>
+    <string name="show_age_label">Age:</string>
+    <string name="show_email_label">Email:</string>
+    <string name="show_face_encoding_label">Face encoding:</string>
+
     <!-- Users activity-->
     <string name="users_label">Users</string>
+
+    <!-- Settings activity -->
+    <string name="settings_label">Settings</string>
+    <string name="scheme_label">Scheme</string>
+    <string name="address_label">Address</string>
+    <string name="port_label">Port</string>
+    <string name="rest_api_sub_path_label">API Sub Path</string>
+    <string name="recognize_path_label">Recognize Path</string>
+    <string name="create_path_label">Create Path</string>
+    <string name="address_hint">IP or DNS</string>
+    <string name="port_hint">4000-65535</string>
+
+    <string-array name="scheme_array">
+        <item>http</item>
+        <item>https</item>
+    </string-array>
 
     <!-- About Us activity-->
     <string name="about_us_label">About Us</string>

@@ -25,40 +25,9 @@ android {
             path 'src/main/jni/Android.mk'
         }
     }
-
-    // These options are needed to successfully import additional dependencies for http
-//    packagingOptions {
-//
-//        exclude 'META-INF/DEPENDENCIES.txt'
-//        exclude 'META-INF/LICENSE.txt'
-//        exclude 'META-INF/NOTICE.txt'
-//        exclude 'META-INF/NOTICE'
-//        exclude 'META-INF/LICENSE'
-//        exclude 'META-INF/DEPENDENCIES'
-//        exclude 'META-INF/notice.txt'
-//        exclude 'META-INF/license.txt'
-//        exclude 'META-INF/dependencies.txt'
-//        exclude 'META-INF/LGPL2.1'
-//
-//    }
 }
 
 dependencies {
     compile project(':openCVLibrary320')
     compile 'com.android.support:appcompat-v7:25.3.0'
-
-//    compile fileTree(include: ['*.jar'], dir: 'build/libs')
-////    compile files('build/libs/commons-cli-1.2.jar')
-////    compile files('build/libs/commons-codec-1.9.jar')
-////    compile files('build/libs/commons-logging-1.2.jar')
-////    compile files('build/libs/fluent-hc-4.5.3.jar')
-//    compile files('build/libs/httpclient-4.5.3.jar')
-////    compile files('build/libs/httpclient-cache-4.5.3.jar')
-////    compile files('build/libs/httpclient-win-4.5.3.jar')
-//    compile files('build/libs/httpcore-4.4.6.jar')
-////    compile files('build/libs/httpcore-ab-4.4.6.jar')
-////    compile files('build/libs/httpcore-nio-4.4.6.jar')
-//    compile files('build/libs/httpmime-4.5.3.jar')
-////    compile files('build/libs/jna-4.1.0.jar')
-////    compile files('build/libs/jna-platform-4.1.0.jar')
 }

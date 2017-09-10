@@ -18,17 +18,18 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         />
+
     <ImageButton
         android:id="@+id/recognizeBtn"
         android:layout_width="220dp"
         android:layout_height="220dp"
-        android:background="@drawable/take_picture_button"
-        android:scaleType="centerCrop"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/take_picture_button"
         android:onClick="faceRecognition"
-        />
+        android:scaleType="centerCrop"
+        android:soundEffectsEnabled="true"/>
 
     <View
         android:layout_width="match_parent"

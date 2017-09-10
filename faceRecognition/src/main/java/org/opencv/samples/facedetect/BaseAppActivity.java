@@ -23,7 +23,7 @@ import org.opencv.samples.facedetect.data.RecognitionDbHelper;
  */
 
 // Base Activity that implemenets global menu. All other app activities must extend from this activity
-public class BaseAppActivity extends Activity {
+public abstract class BaseAppActivity extends Activity {
 
     protected RecognitionDbHelper mDbHelper;
     SQLiteDatabase mDb;
@@ -42,9 +42,12 @@ public class BaseAppActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
+        if (this instanceof SettingsActivity == false){
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.main, menu);
+            return super.onCreateOptionsMenu(menu);
+        }
+        return false;
     }
 
     @Override
@@ -53,6 +56,9 @@ public class BaseAppActivity extends Activity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.menu_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -25,11 +25,27 @@
     <style name="appButton">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:background">#8C9EFF</item>
-        <item name="android:textColor">#E3F2FD</item>
+        <item name="android:background">@color/appBtnColor</item>
+        <item name="android:textColor">@color/appBtnTextColor</item>
         <!--<item name="android:textAlignment">center</item>-->
         <!--<item name="android:textAllCaps">false</item>-->
     </style>
+
+    <style name="actionFooter">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/action_footer</item>
+    </style>
+
+    <style name="actionFooterButton" parent="appButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <!-- Container must have weigthSum = 100-->
+        <item name="android:layout_weight">45</item>
+    </style>
+
 
     <!-- Main activity -->
     <style name="mainActivityButton" parent="appButton">
@@ -63,19 +79,30 @@
         <!--<item name="android:gravity">center_horizontal</item>-->
     </style>
 
-    <style name="personActivityActionFooter">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:orientation">vertical</item>
+    <style name="personActivityActionFooter" parent="actionFooter">
         <item name="android:visibility">gone</item>
-        <item name="android:background">@drawable/action_footer</item>
     </style>
 
-    <style name="personActivityButton" parent="appButton">
-        <item name="android:layout_width">wrap_content</item>
+    <!-- Settings Activity -->
+    <style name="settingsActivityLinearLayoutContainer">
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:weightSum">100</item>
+        <item name="android:paddingTop">10dp</item>
     </style>
+
+    <style name="settingsActivityLabel">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">35</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="settingsActivityInput">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">65</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 </resources>
 
 
