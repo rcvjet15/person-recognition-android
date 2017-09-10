@@ -3,8 +3,12 @@ package org.opencv.samples.facedetect;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
+import android.widget.ViewSwitcher;
 
 /**
  * Created by Robi on 10/09/2017.
@@ -43,6 +47,10 @@ public class PersonActivity extends BaseAppActivity {
     private TextView mAge;
     private TextView mEmail;
     private TextView mFaceEncoding;
+    private ViewFlipper mActionFooterFlipper;
+    private LinearLayout mShowFooter;
+    private LinearLayout mInsertFooter;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +73,9 @@ public class PersonActivity extends BaseAppActivity {
 
     private void setupInsertActivity(Bundle extras){
         setContentView(R.layout.activity_person_show);
+
+        mInsertFooter = (LinearLayout) findViewById(R.id.insertFooter);
+        mInsertFooter.setVisibility(View.VISIBLE);
 
         mImageView = (ImageView) findViewById(R.id.profilePicShow);
         mFirstName = (TextView) findViewById(R.id.firstNameShow);

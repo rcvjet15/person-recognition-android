@@ -60,7 +60,25 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">10dp</item>
-        <item name="android:gravity">center_horizontal</item>
+        <!--<item name="android:gravity">center_horizontal</item>-->
+    </style>
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/insertFooter"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="vertical"-->
+        <!--android:background="@drawable/action_footer"-->
+        <!--android:layout_gravity="top"-->
+        <!--android:visibility="gone"-->
+        <!--android:weightSum="100">-->
+
+    <style name="personActivityActionFooter">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:background">@drawable/action_footer</item>
     </style>
 </resources>
 

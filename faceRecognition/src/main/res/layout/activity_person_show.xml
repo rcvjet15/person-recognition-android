@@ -7,26 +7,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="50">
+        android:layout_weight="40"
+        android:background="@color/mainBgColor">
         <ImageView
             android:id="@+id/profilePicShow"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/subBgColor"
-        android:layout_marginTop="20dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:background="#000000"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="5dp"
         />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="50">
+        android:layout_weight="48">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -54,4 +57,22 @@
                 android:text="Face encoding: "/>
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="15"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/showFooter"
+            style="@style/personActivityActionFooter"
+            android:weightSum="100">
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/insertFooter"
+            style="@style/personActivityActionFooter"
+            android:weightSum="100">
+
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
