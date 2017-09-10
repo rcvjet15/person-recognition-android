@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -27,21 +26,17 @@ import android.widget.Toast;
 import org.opencv.samples.facedetect.utilities.IResponseMessage;
 import org.opencv.samples.facedetect.utilities.RecognizeJsonUtils;
 import org.opencv.samples.facedetect.utilities.ResponseMessageRecognize;
-import org.opencv.samples.facedetect.utilities.SettingsUtils;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -300,7 +295,7 @@ public class RecognizeActivity extends BaseAppActivity {
         }
 
         private void setupPostHeaders() throws MalformedURLException, IOException {
-            mUrl = new URL(SettingsUtils.UriFactory(SettingsUtils.UriType.RECOGNIZE).toString());
+            mUrl = new URL(Settings.UriFactory(Settings.UriType.RECOGNIZE).toString());
 
             mHttpUrlConnection = (HttpURLConnection) mUrl.openConnection();
             mHttpUrlConnection.setUseCaches(false);
@@ -338,7 +333,7 @@ public class RecognizeActivity extends BaseAppActivity {
             Boolean available = null;
             try{
                 // Test with this URL because RECOGNIZE uri takes POST request
-                URL url = new URL(SettingsUtils.UriFactory(SettingsUtils.UriType.PEOPLE_API).toString());
+                URL url = new URL(Settings.UriFactory(Settings.UriType.PEOPLE_API).toString());
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setConnectTimeout(10000);
                 conn.connect();

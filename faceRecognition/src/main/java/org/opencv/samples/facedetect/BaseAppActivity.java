@@ -2,6 +2,7 @@ package org.opencv.samples.facedetect;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import org.opencv.samples.facedetect.data.RecognitionDbHelper;
+
 /**
  * Created by Robi on 07/09/2017.
  */
@@ -19,9 +22,14 @@ import android.view.MenuItem;
 // Base Activity that implemenets global menu. All other app activities must extend from this activity
 public class BaseAppActivity extends Activity {
 
+    protected RecognitionDbHelper mDbHelper;
+    SQLiteDatabase mDb;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mDbHelper = new RecognitionDbHelper(this);
 
         // Don't show back button on action bar for MainActivity
         if (this instanceof MainActivity == false) {

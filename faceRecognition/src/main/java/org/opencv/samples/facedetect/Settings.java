@@ -1,4 +1,4 @@
-package org.opencv.samples.facedetect.utilities;
+package org.opencv.samples.facedetect;
 
 import android.net.Uri;
 
@@ -6,7 +6,7 @@ import android.net.Uri;
  * Created by Robi on 04/09/2017.
  */
 
-public class SettingsUtils {
+public class Settings {
     public enum UriType { SERVER_ADDR, CREATE, RECOGNIZE, PEOPLE_API }
 
     private static String sScheme = "http";

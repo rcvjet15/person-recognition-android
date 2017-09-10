@@ -53,10 +53,17 @@ public class Person implements Parcelable {
         return person;
     }
 
-    public Bitmap ConvertImageBase64ToBitmap(){
+    public Bitmap convertImageBase64ToBitmap(){
         if (mImageBase64 != null && mImageBase64.length() > 0){
             byte[] decodedString = Base64.decode(mImageBase64, Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        }
+        return null;
+    }
+
+    public byte[] convertImageBase64ToByteArray(){
+        if (mImageBase64 != null && mImageBase64.length() > 0){
+            return Base64.decode(mImageBase64, Base64.DEFAULT);
         }
         return null;
     }

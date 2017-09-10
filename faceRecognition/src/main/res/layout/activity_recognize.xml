@@ -28,7 +28,7 @@
 
         <Button
             android:id="@+id/cancelSendBtn"
-            style="@style/captureImageActivityButton"
+            style="@style/recognizeActivityButton"
             android:onClick="cancelSend"
             android:text="@string/cancel"/>
 
@@ -57,9 +57,8 @@
 
         <Button
             android:id="@+id/sendPictureBtn"
-            style="@style/captureImageActivityButton"
+            style="@style/recognizeActivityButton"
             android:onClick="sendPicture"
-            android:text="@string/send_photo"
-            android:textColor="#E3F2FD"/>
+            android:text="@string/send_photo"/>
     </LinearLayout>
 </LinearLayout>

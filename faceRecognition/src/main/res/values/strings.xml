@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Person Recognition</string>
     <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
 
     <!-- Main activity-->
     <string name="add_btn">Add</string>
