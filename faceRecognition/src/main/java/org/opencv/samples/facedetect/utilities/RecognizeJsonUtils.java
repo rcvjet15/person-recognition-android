@@ -1,6 +1,7 @@
 package org.opencv.samples.facedetect.utilities;
 
 import android.util.JsonReader;
+import android.util.JsonToken;
 
 import org.opencv.samples.facedetect.Person;
 
@@ -57,7 +58,7 @@ public class RecognizeJsonUtils extends JsonUtils{
             if (name.equals("person")){
                 person = Person.createFromJson(reader);
             }
-            else if (name.equals("profile-pic")){
+            else if (name.equals("profile-pic") && reader.peek() != JsonToken.NULL){
                 imageBase64 = reader.nextString();
             }
             else if (name.equals("status")){

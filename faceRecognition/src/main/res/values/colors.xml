@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="mainBgColor">#536DFE</color>
-    <color name="imageViewBgColor">#82B1FF</color>
+    <!--<color name="subBgColor">#82B1FF</color>-->
+    <color name="subBgColor">#ffffff</color>
 
 </resources>

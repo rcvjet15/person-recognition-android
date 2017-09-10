@@ -3,6 +3,7 @@ package org.opencv.samples.facedetect;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -102,6 +103,26 @@ public class RecognizeActivity extends BaseAppActivity {
 
         RecognizeTask task = new RecognizeTask(this);
         task.execute(mPhoto);
+
+    }
+
+    private void onBackgroundTaskCompleted(ResponseMessageRecognize result){
+        if (result.getStatus() == 1){
+            Person recognizedPerson =  result.getPerson();
+            // Check if server contains profile-pic (It must contain otherwise it won't be able to recognize
+            // but just in case :D)
+            if (result.getImageBase64() != null && result.getImageBase64().length() > 0){
+                recognizedPerson.setImageBase64(result.getImageBase64());
+            }
+            else{
+                Toast.makeText(this, "Server did not return profile picture.", Toast.LENGTH_LONG).show();
+            }
+
+            Context context = this;
+            Class destinationClass = PersonActivity.class;
+            Intent intent = new Intent(context, destinationClass);
+            startActivity(intent);
+        }
     }
 
     public void cancelSend(View view){
@@ -182,14 +203,14 @@ public class RecognizeActivity extends BaseAppActivity {
         private HttpURLConnection mHttpUrlConnection;
         private DataOutputStream mRequest;
         private ProgressDialog mProgressDialog;
-        private Activity mCallingActivity;
+        private RecognizeActivity mCallingActivity;
         private List<IResponseMessage> mResponseMessageList;
 
         private String mCrlf = "\r\n";
         private String mTwoHyphens = "--";
         private String mBoundary = "*****";
 
-        public RecognizeTask(Activity activity){
+        public RecognizeTask(RecognizeActivity activity){
             mCallingActivity = activity;
             initializeProgressDialog();
         }
@@ -229,6 +250,7 @@ public class RecognizeActivity extends BaseAppActivity {
                 }
             }
             catch (Resources.NotFoundException e){
+                // Simulate server response
                 return new ResponseMessageRecognize(null, null, -1, "Server is not available.");
             }
             catch (MalformedURLException e){
@@ -257,25 +279,15 @@ public class RecognizeActivity extends BaseAppActivity {
         protected void onPostExecute(IResponseMessage result) {
             super.onPostExecute(result);
             hideProgressDialog();
+
+            // Show alert dialog if status is not 1
             ResponseMessageRecognize responseMsgObj = (ResponseMessageRecognize)result;
             if (responseMsgObj.getStatus() != 1){
                 showAlertDialog(responseMsgObj.getResponseMsg(), "Error");
-                return;
             }
 
-            try{
-                if (responseMsgObj.getImageBase64() != null && responseMsgObj.getImageBase64().length() > 0){
-                    byte[] decodedString = Base64.decode(responseMsgObj.getImageBase64(), Base64.DEFAULT);
-                    Bitmap decodeByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    mImageView.setImageBitmap(decodeByte);
-                }
-                else{
-                    Toast.makeText(mCallingActivity, "Server did not return profile picture.", Toast.LENGTH_LONG).show();
-                }
-
-            }catch (Exception e){
-                Toast.makeText(mCallingActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+            // Callback method, pass result to calling activity
+            mCallingActivity.onBackgroundTaskCompleted((ResponseMessageRecognize) result);
         }
 
         @Override

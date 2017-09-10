@@ -1,6 +1,9 @@
 package org.opencv.samples.facedetect;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.provider.Settings;
+import android.util.Base64;
 import android.util.JsonReader;
 
 import java.io.IOException;
@@ -45,6 +48,14 @@ public class Person {
 
         jsonReader.endObject();
         return person;
+    }
+
+    public Bitmap ConvertImageBase64ToBitmap(){
+        if (mImageBase64 != null && mImageBase64.length() > 0){
+            byte[] decodedString = Base64.decode(mImageBase64, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        }
+        return null;
     }
 
     private String mFirstName;
