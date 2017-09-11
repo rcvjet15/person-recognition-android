@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import org.opencv.samples.facedetect.data.RecognitionDbHelper;
 
@@ -64,7 +65,6 @@ public abstract class BaseAppActivity extends Activity {
         }
     }
 
-
     protected void showAlertDialog(Context context, String msg, String title){
         AlertDialog dialog = new AlertDialog.Builder(context).create();
         if (title != null && title.length() > 0){
@@ -80,5 +80,37 @@ public abstract class BaseAppActivity extends Activity {
                     }
                 });
         dialog.show();
+    }
+
+    protected void showStayOrLeavePromptDialog(Context context, String msg, String title){
+        AlertDialog dialog = new AlertDialog.Builder(context).create();
+        if (title != null && title.length() > 0){
+            dialog.setTitle(title);
+        }
+
+        dialog.setMessage(msg);
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+
+        dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NO",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+        dialog.show();
+    }
+
+    protected void cancel(View view){
+        showStayOrLeavePromptDialog(this, "Do you want to leave?", "Changes not saved");
     }
 }

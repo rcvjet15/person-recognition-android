@@ -64,8 +64,7 @@
                     android:text="@string/recognize_path_label"/>
                 <EditText
                     android:id="@+id/recognizeInput"
-                    style="@style/settingsActivityInput"
-                    android:text=""/>
+                    style="@style/settingsActivityInput"/>
             </LinearLayout>
             <LinearLayout
                 style="@style/settingsActivityLinearLayoutContainer">
@@ -75,8 +74,7 @@
                     android:text="@string/create_path_label"/>
                 <EditText
                     android:id="@+id/createInput"
-                    style="@style/settingsActivityInput"
-                    android:text=""/>
+                    style="@style/settingsActivityInput"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

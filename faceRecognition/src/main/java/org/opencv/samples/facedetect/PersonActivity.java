@@ -75,6 +75,8 @@ public class PersonActivity extends BaseAppActivity {
             else {
 
             }
+
+            if (mPerson != null){ this.getActionBar().setTitle(String.format("%s %s", mPerson.getFirstName(), mPerson.getLastName())); }
         }
     }
 
@@ -99,12 +101,11 @@ public class PersonActivity extends BaseAppActivity {
         mAge.setText(String.format("%s %d", mAge.getText(), mPerson.getAge()));
         mEmail.setText(String.format("%s %s", mEmail.getText(), mPerson.getEmail()));
         mFaceEncoding.setText(String.format("%s %s", mFaceEncoding.getText(), mPerson.getFaceEncoding()));
-
-        this.getActionBar().setTitle(String.format("%s %s", mPerson.getFirstName(), mPerson.getLastName()));
     }
 
+    @Override
     public void cancel(View view){
-        finish();
+        super.cancel(view);
     }
 
     public void insert(View view){

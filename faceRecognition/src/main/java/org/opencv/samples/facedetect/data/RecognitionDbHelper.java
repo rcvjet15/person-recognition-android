@@ -3,16 +3,23 @@ package org.opencv.samples.facedetect.data;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import org.json.JSONArray;
 import org.opencv.samples.facedetect.Settings;
 import org.opencv.samples.facedetect.data.PersonContract.*;
 import org.opencv.samples.facedetect.data.SettingContract.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.logging.StreamHandler;
 
 /**
  * Created by Robi on 10/09/2017.
@@ -22,8 +29,8 @@ public class RecognitionDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "recognition.db";
 
-    // Increment on each databasee migration
-    private static final int DATABASE_VERSION = 1;
+    // Increment on each database migration
+    private static final int DATABASE_VERSION = 2;
 
     public RecognitionDbHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -80,42 +87,7 @@ public class RecognitionDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + PersonEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + SettingEntry.TABLE_NAME);
         onCreate(db);
-    }
 
-
-    /**
-     * Method that is called after db migration to insert default data
-     */
-    public void insertDefaultSettingsData(SQLiteDatabase db){
-        db = this.getWritableDatabase();
-
-        String[] keys = new String[]{
-                Settings.KEY_SCHEME,
-                Settings.KEY_ADDRESS,
-                Settings.KEY_PORT,
-                Settings.KEY_REST_API_SUB_PATH,
-                Settings.KEY_RECOGNIZE_PATH,
-                Settings.KEY_CREATE_PATH };
-
-//        String[] values = new String[]{
-//
-//        }
-
-        db.beginTransaction();
-
-        try{
-
-
-
-            db.setTransactionSuccessful();
-        }
-        catch (Exception e){
-
-        }
-        finally {
-            db.endTransaction();
-        }
-        db.close();
-
+        Settings.saveSettings(db, this);
     }
 }
