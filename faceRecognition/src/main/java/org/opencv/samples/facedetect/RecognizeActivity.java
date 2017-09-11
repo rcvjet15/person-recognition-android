@@ -123,8 +123,9 @@ public class RecognizeActivity extends BaseAppActivity {
         }
     }
 
-    public void cancelSend(View view){
-        finish();
+    @Override
+    public void cancel(View view){
+        super.cancel(view);
     }
 
 

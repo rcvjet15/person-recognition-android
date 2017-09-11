@@ -1,10 +1,12 @@
 package org.opencv.samples.facedetect;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v7.widget.ContentFrameLayout;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.opencv.samples.facedetect.data.RecognitionDbHelper;
 import org.opencv.samples.facedetect.data.SettingContract.*;
@@ -163,6 +165,64 @@ public class Settings {
      * Update settings from db
      */
     public static void fetchSettingsFromDb(SQLiteDatabase db, RecognitionDbHelper dbHelper){
-        
+
+        db = dbHelper.getReadableDatabase();
+
+        // Define projection that specifies which columns will be selected
+        String[] projection = {
+                SettingEntry.COLUMN_KEY,
+                SettingEntry.COLUMN_VALUE
+        };
+
+        Cursor cursor = db.query(
+                SettingEntry.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        try{
+            String key, value;
+            while (cursor.moveToNext()){
+                key = cursor.getString(
+                        cursor.getColumnIndexOrThrow(SettingEntry.COLUMN_KEY)
+                );
+
+                value = cursor.getString(
+                        cursor.getColumnIndexOrThrow(SettingEntry.COLUMN_VALUE)
+                );
+
+                switch (key){
+                    case Settings.KEY_SCHEME:
+                        Settings.setScheme(value);
+                        break;
+                    case Settings.KEY_ADDRESS:
+                        Settings.setAddress(value);
+                        break;
+                    case Settings.KEY_PORT:
+                        Settings.setPort(Long.parseLong(value));
+                        break;
+                    case Settings.KEY_REST_API_SUB_PATH:
+                        Settings.setRestApiSubPath(value);
+                        break;
+                    case Settings.KEY_RECOGNIZE_PATH:
+                        Settings.setRecognizePath(value);
+                        break;
+                    case Settings.KEY_CREATE_PATH:
+                        Settings.setCreatePath(value);
+                        break;
+                }
+            }
+
+        }
+        catch (IllegalArgumentException e){
+            Log.d("FETCH SETTINGS", e.getMessage());
+        }
+        finally {
+            cursor.close();
+        }
     }
 }

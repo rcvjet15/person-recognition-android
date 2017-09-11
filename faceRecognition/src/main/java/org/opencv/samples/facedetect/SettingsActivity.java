@@ -50,8 +50,11 @@ public class SettingsActivity extends BaseAppActivity {
         mRecognizePath = (EditText) findViewById(R.id.recognizeInput);
         mCreatePath = (EditText) findViewById(R.id.createInput);
 
+        // Fetch settings from db
+        Settings.fetchSettingsFromDb(db, dbHelper);
+
         /*
-         * Update activity edit texts
+         * Update activity edit texts from Settings properties
          */
         // Select proper item based on value
         int spinnerPosition = schemeAdapter.getPosition(Settings.getScheme());
