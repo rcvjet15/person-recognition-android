@@ -33,6 +33,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -246,7 +247,7 @@ public class RecognizeActivity extends BaseAppActivity {
                     throw new Exception("Server returned empty response.");
                 }
             }
-            catch (Resources.NotFoundException e){
+            catch (ConnectException e){
                 // Simulate server response
                 return new ResponseMessageRecognize(null, null, -1, "Server is not available.");
             }
@@ -330,7 +331,7 @@ public class RecognizeActivity extends BaseAppActivity {
             return bos.toByteArray();
         }
 
-        private void checkServerAvailability() throws Resources.NotFoundException {
+        private void checkServerAvailability() throws ConnectException {
             HttpURLConnection conn = null;
             Boolean available = null;
             try{
@@ -352,7 +353,7 @@ public class RecognizeActivity extends BaseAppActivity {
             }
 
             if (!available){
-                throw new Resources.NotFoundException("Server cannot be reached.");
+                throw new ConnectException("Server cannot be reached.");
             }
         }
 

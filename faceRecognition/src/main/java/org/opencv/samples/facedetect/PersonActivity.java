@@ -109,7 +109,7 @@ public class PersonActivity extends BaseAppActivity {
 
     public void insert(View view){
         try{
-            mDb = mDbHelper.getWritableDatabase();
+            db = dbHelper.getWritableDatabase();
 
             ContentValues values = new ContentValues();
             values.put(PersonEntry.COLUMN_FIRST_NAME, mPerson.getFirstName());
@@ -119,7 +119,7 @@ public class PersonActivity extends BaseAppActivity {
             values.put(PersonEntry.COLUMN_STATUS, mPerson.getStatus());
             values.put(PersonEntry.COLUMN_PROFILE_PIC, mPerson.convertImageBase64ToByteArray());
             values.put(PersonEntry.COLUMN_VALID_FROM, System.currentTimeMillis());
-            long newRowId = mDb.insert(PersonEntry.TABLE_NAME, null, values);
+            long newRowId = db.insert(PersonEntry.TABLE_NAME, null, values);
 
             if (newRowId > 0){
                 Toast.makeText(this, String.format("Successfully created %s %s", mPerson.getFirstName(), mPerson.getLastName()), Toast.LENGTH_SHORT).show();

@@ -33,7 +33,7 @@
     <string name="recognize_path_label">Recognize Path</string>
     <string name="create_path_label">Create Path</string>
     <string name="address_hint">IP or DNS</string>
-    <string name="port_hint">4000-65535</string>
+    <string name="port_hint">4000 - 65535</string>
 
     <string-array name="scheme_array">
         <item>http</item>

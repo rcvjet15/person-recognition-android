@@ -25,14 +25,14 @@ import org.opencv.samples.facedetect.data.RecognitionDbHelper;
 // Base Activity that implemenets global menu. All other app activities must extend from this activity
 public abstract class BaseAppActivity extends Activity {
 
-    protected RecognitionDbHelper mDbHelper;
-    SQLiteDatabase mDb;
+    protected RecognitionDbHelper dbHelper;
+    protected SQLiteDatabase db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mDbHelper = new RecognitionDbHelper(this);
+        dbHelper = new RecognitionDbHelper(this);
 
         // Don't show back button on action bar for MainActivity
         if (this instanceof MainActivity == false) {

@@ -1,12 +1,21 @@
 package org.opencv.samples.facedetect;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.v7.widget.ContentFrameLayout;
 
 /**
  * Created by Robi on 04/09/2017.
  */
 
 public class Settings {
+    public static final String KEY_SCHEME = "scheme";
+    public static final String KEY_ADDRESS = "address";
+    public static final String KEY_PORT = "port";
+    public static final String KEY_REST_API_SUB_PATH = "rest_api_sub_path";
+    public static final String KEY_RECOGNIZE_PATH = "recognize_path";
+    public static final String KEY_CREATE_PATH = "create_path";
+
     public enum UriType { SERVER_ADDR, CREATE, RECOGNIZE, PEOPLE_API }
 
     private static String sScheme = "http";
@@ -45,5 +54,12 @@ public class Settings {
         }
 
         return uriBuilder.build();
+    }
+
+    /**
+     * Update settings from db
+     */
+    public static void updateSettingsFromDb(){
+
     }
 }
