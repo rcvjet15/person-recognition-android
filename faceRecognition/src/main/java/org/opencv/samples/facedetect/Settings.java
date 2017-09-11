@@ -162,7 +162,7 @@ public class Settings {
     /**
      * Update settings from db
      */
-    public static void fetchSettingsFromDb(){
-
+    public static void fetchSettingsFromDb(SQLiteDatabase db, RecognitionDbHelper dbHelper){
+        
     }
 }

@@ -96,7 +96,7 @@
         <Button
             android:id="@+id/saveBtn"
             style="@style/actionFooterButton"
-            android:onClick="insert"
+            android:onClick="save"
             android:text="@string/save"/>
     </LinearLayout>
 </LinearLayout>

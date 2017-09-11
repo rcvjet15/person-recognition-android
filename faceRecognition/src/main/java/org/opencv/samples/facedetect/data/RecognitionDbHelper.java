@@ -44,18 +44,6 @@ public class RecognitionDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        /*
-         * SQL statement for creating setting table
-         */
-        final String SQL_CREATE_SETTING_TABLE =
-                "CREATE TABLE " + PersonEntry.TABLE_NAME + " (" +
-                SettingEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                SettingEntry.COLUMN_KEY + " TEXT NOT NULL, " +
-                SettingEntry.COLUMN_VALUE + " TEXT NOT NULL, " +
-                SettingEntry.COLUMN_DESCRIPTION + " TEXT)";
-
-        db.execSQL(SQL_CREATE_SETTING_TABLE);
-
          /*
          * SQL statement for creating person table
          */
@@ -72,7 +60,22 @@ public class RecognitionDbHelper extends SQLiteOpenHelper {
                         // Store datetime as long value. To retrieve it successfully use cursor.getLong() because of int value overflow.
                         PersonEntry.COLUMN_VALID_FROM + " INT NOT NULL)";
 
+
         db.execSQL(SQL_CREATE_PERSON_TABLE);
+
+        /*
+         * SQL statement for creating setting table
+         */
+        final String SQL_CREATE_SETTING_TABLE =
+                "CREATE TABLE " + SettingEntry.TABLE_NAME + " (" +
+                        SettingEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        SettingEntry.COLUMN_KEY + " TEXT NOT NULL, " +
+                        SettingEntry.COLUMN_VALUE + " TEXT NOT NULL, " +
+                        SettingEntry.COLUMN_DESCRIPTION + " TEXT)";
+
+        db.execSQL(SQL_CREATE_SETTING_TABLE);
+
+
     }
 
     /**
@@ -87,7 +90,5 @@ public class RecognitionDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + PersonEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + SettingEntry.TABLE_NAME);
         onCreate(db);
-
-        Settings.saveSettings(db, this);
     }
 }

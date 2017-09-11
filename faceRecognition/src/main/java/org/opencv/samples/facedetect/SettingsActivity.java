@@ -1,6 +1,7 @@
 package org.opencv.samples.facedetect;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -8,8 +9,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import java.io.InvalidObjectException;
 import java.util.Set;
 
 /**
@@ -46,6 +49,19 @@ public class SettingsActivity extends BaseAppActivity {
         mRestApiSubPath = (EditText) findViewById(R.id.restApiSubPathInput);
         mRecognizePath = (EditText) findViewById(R.id.recognizeInput);
         mCreatePath = (EditText) findViewById(R.id.createInput);
+
+        /*
+         * Update activity edit texts
+         */
+        // Select proper item based on value
+        int spinnerPosition = schemeAdapter.getPosition(Settings.getScheme());
+        mScheme.setSelection(spinnerPosition);
+        mAddress.setText(Settings.getAddress());
+        mPort.setText(Settings.getPort().toString());
+        mRestApiSubPath.setText(Settings.getRestApiSubPath());
+        mRecognizePath.setText(Settings.getRecognizePath());
+        mCreatePath.setText(Settings.getCreatePath());
+
     }
 
     @Override
@@ -54,6 +70,8 @@ public class SettingsActivity extends BaseAppActivity {
     }
 
     public void save(View view){
+        if (!validateData()) return;
+
         Settings.setScheme(mScheme.getSelectedItem().toString());
         Settings.setAddress(mAddress.getText().toString());
         Settings.setPort(Long.parseLong(mPort.getText().toString()));
@@ -63,6 +81,37 @@ public class SettingsActivity extends BaseAppActivity {
 
         // Save settings into database
         Settings.saveSettings(db, dbHelper);
+
+        Toast.makeText(this, "Settings successfully saved!", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
+    private boolean validateData() {
+        boolean valid = true;
+        String errorMsg = "";
+        if (mAddress.getText().length() == 0){
+            errorMsg = String.format("%s cannot be empty.", this.getString(R.string.address_label));
+            valid = false;
+        }
+        else if (mPort.getText().length() == 0){
+            errorMsg = String.format("%s cannot be empty.", this.getString(R.string.port_label));
+            valid = false;
+        }
+        else if (mRestApiSubPath.getText().length() == 0){
+            errorMsg = String.format("%s cannot be empty.", this.getString(R.string.rest_api_sub_path_label));
+            valid = false;
+        }
+        else if (mRecognizePath.getText().length() == 0){
+            errorMsg = String.format("%s cannot be empty.", this.getString(R.string.recognize_path_label));
+            valid = false;
+        }
+        else if (mCreatePath.getText().length() == 0){
+            errorMsg = String.format("%s cannot be empty.", this.getString(R.string.create_path_label));
+            valid = false;
+        }
+
+        if (!valid) { showAlertDialog(this, errorMsg, "Settings Error"); }
+
+        return valid;
+    }
 }
