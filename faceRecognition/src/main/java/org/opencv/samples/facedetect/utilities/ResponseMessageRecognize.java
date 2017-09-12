@@ -6,18 +6,15 @@ import org.opencv.samples.facedetect.Person;
  * Created by Robi on 09/09/2017.
  */
 
-public class ResponseMessageRecognize implements IResponseMessage{
+public class ResponseMessageRecognize extends ResponseMessage {
     private Person mPerson;
     private String mImageBase64;
-    private int mStatus;
-    private String mResponseMsg;
-
 
     public ResponseMessageRecognize(Person person, String imageBase64, int status, String responseMsg){
+        super(status, responseMsg);
+
         mPerson = person;
         mImageBase64 = imageBase64;
-        mStatus = status;
-        mResponseMsg = responseMsg;
     }
 
     public Person getPerson(){
@@ -28,11 +25,5 @@ public class ResponseMessageRecognize implements IResponseMessage{
         return mImageBase64;
     }
 
-    public int getStatus(){
-        return mStatus;
-    }
 
-    public String getResponseMsg(){
-        return mResponseMsg;
-    }
 }

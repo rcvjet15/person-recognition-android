@@ -21,7 +21,7 @@ public class RecognizeJsonUtils extends JsonUtils{
 
 
     @Override
-    public List<IResponseMessage> readJsonStream(InputStream responseStream) throws IOException {
+    public List<ResponseMessage> readJsonStream(InputStream responseStream) throws IOException {
         JsonReader jsonReader = new JsonReader(new InputStreamReader(responseStream, "UTF-8"));
 
         try{
@@ -33,8 +33,8 @@ public class RecognizeJsonUtils extends JsonUtils{
     }
 
     @Override
-    protected List<IResponseMessage> readMessagesArray(JsonReader reader) throws IOException{
-        List<IResponseMessage> messages = new ArrayList<IResponseMessage>();
+    protected List<ResponseMessage> readMessagesArray(JsonReader reader) throws IOException{
+        List<ResponseMessage> messages = new ArrayList<ResponseMessage>();
 
         reader.beginArray();
         while (reader.hasNext()){
@@ -45,7 +45,7 @@ public class RecognizeJsonUtils extends JsonUtils{
     }
 
     @Override
-    protected IResponseMessage readMessage(JsonReader reader) throws IOException{
+    protected ResponseMessage readMessage(JsonReader reader) throws IOException{
         int status = -100;
         Person person = null;
         String imageBase64 = null;

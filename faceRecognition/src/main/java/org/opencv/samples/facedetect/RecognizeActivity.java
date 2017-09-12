@@ -1,12 +1,10 @@
 package org.opencv.samples.facedetect;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -23,7 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import org.opencv.samples.facedetect.utilities.IResponseMessage;
+import org.opencv.samples.facedetect.utilities.ResponseMessage;
 import org.opencv.samples.facedetect.utilities.RecognizeJsonUtils;
 import org.opencv.samples.facedetect.utilities.ResponseMessageRecognize;
 
@@ -198,7 +196,7 @@ public class RecognizeActivity extends BaseAppActivity {
         return image;
     }
 
-    private class RecognizeTask extends AsyncTask<Bitmap, String, IResponseMessage> {
+    private class RecognizeTask extends AsyncTask<Bitmap, String, ResponseMessage> {
 
         private final String SUCCESS_MSG = "Success!";
         private String mErrorMsg;
@@ -207,7 +205,7 @@ public class RecognizeActivity extends BaseAppActivity {
         private DataOutputStream mRequest;
         private ProgressDialog mProgressDialog;
         private RecognizeActivity mCallingActivity;
-        private List<IResponseMessage> mResponseMessageList;
+        private List<ResponseMessage> mResponseMessageList;
 
         private String mCrlf = "\r\n";
         private String mTwoHyphens = "--";
@@ -225,7 +223,7 @@ public class RecognizeActivity extends BaseAppActivity {
         }
 
         @Override
-        protected IResponseMessage doInBackground(Bitmap... params) {
+        protected ResponseMessage doInBackground(Bitmap... params) {
             try {
                 publishProgress("Checking server availability...");
 
@@ -243,7 +241,7 @@ public class RecognizeActivity extends BaseAppActivity {
 
                 publishProgress("Parsing server response...");
                 RecognizeJsonUtils jsonUtils = new RecognizeJsonUtils();
-                List<IResponseMessage> messageList = jsonUtils.readJsonStream(responseStream);
+                List<ResponseMessage> messageList = jsonUtils.readJsonStream(responseStream);
 
                 if (messageList.size() > 0){
                     return messageList.get(0);
@@ -279,7 +277,7 @@ public class RecognizeActivity extends BaseAppActivity {
         }
 
         @Override
-        protected void onPostExecute(IResponseMessage result) {
+        protected void onPostExecute(ResponseMessage result) {
             super.onPostExecute(result);
             hideProgressDialog();
 

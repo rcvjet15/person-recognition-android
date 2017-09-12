@@ -19,13 +19,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.opencv.samples.facedetect.utilities.IResponseMessage;
+import org.opencv.samples.facedetect.utilities.ResponseMessage;
 import org.opencv.samples.facedetect.utilities.ImageUtils;
 import org.opencv.samples.facedetect.utilities.RecognizeJsonUtils;
 import org.opencv.samples.facedetect.utilities.ResponseMessageRecognize;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -254,7 +253,7 @@ public class PersonActivity extends BaseAppActivity {
         return valid;
     }
 
-    private class SetupPersonTask extends AsyncTask<Person, String, IResponseMessage> {
+    private class SetupPersonTask extends AsyncTask<Person, String, ResponseMessage> {
 
         private String mErrorMsg;
         private URL mUrl;
@@ -262,7 +261,7 @@ public class PersonActivity extends BaseAppActivity {
         private DataOutputStream mRequest;
         private ProgressDialog mProgressDialog;
         private PersonActivity mCallingActivity;
-        private List<IResponseMessage> mResponseMessageList;
+        private List<ResponseMessage> mResponseMessageList;
 
         private String mCrlf = "\r\n";
         private String mTwoHyphens = "--";
@@ -280,7 +279,7 @@ public class PersonActivity extends BaseAppActivity {
         }
 
         @Override
-        protected IResponseMessage doInBackground(Person... people) {
+        protected ResponseMessage doInBackground(Person... people) {
             try {
                 publishProgress("Checking server availability...");
 
@@ -298,7 +297,7 @@ public class PersonActivity extends BaseAppActivity {
 
                 publishProgress("Parsing server response...");
                 RecognizeJsonUtils jsonUtils = new RecognizeJsonUtils();
-                List<IResponseMessage> messageList = jsonUtils.readJsonStream(responseStream);
+                List<ResponseMessage> messageList = jsonUtils.readJsonStream(responseStream);
 
                 publishProgress("Storing person...");
                 if (messageList.size() > 0){
@@ -335,7 +334,7 @@ public class PersonActivity extends BaseAppActivity {
         }
 
         @Override
-        protected void onPostExecute(IResponseMessage result) {
+        protected void onPostExecute(ResponseMessage result) {
             super.onPostExecute(result);
             hideProgressDialog();
 
