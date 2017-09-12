@@ -134,7 +134,7 @@ public class RecognizeActivity extends BaseAppActivity {
                         mImageView.setImageBitmap(mPhoto);
                     }
                     catch (IOException e){
-                        showAlertDialog(this, e.getMessage(), "Recognize Activity Error");
+                        showAlertDialog(this, e.getMessage(), "Photo Setup Error");
                     }
 
                     break;

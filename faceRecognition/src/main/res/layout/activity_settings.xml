@@ -13,69 +13,69 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <LinearLayout
-                style="@style/settingsActivityLinearLayoutContainer">
+                style="@style/formLinearLayoutContainer">
                 <TextView
                     android:id="@+id/schemeLabel"
-                    style="@style/settingsActivityLabel"
+                    style="@style/formLabel"
                     android:text="@string/scheme_label"/>
                 <Spinner
                     android:id="@+id/schemeSpinner"
                     android:spinnerMode="dropdown"
-                    style="@style/settingsActivityInput"
+                    style="@style/formInput"
                     android:inputType="textAutoComplete"/>
             </LinearLayout>
             <LinearLayout
-                style="@style/settingsActivityLinearLayoutContainer">
+                style="@style/formLinearLayoutContainer">
                 <TextView
                     android:id="@+id/addressLabel"
-                    style="@style/settingsActivityLabel"
+                    style="@style/formLabel"
                     android:text="@string/address_label"/>
                 <EditText
                     android:id="@+id/addressInput"
-                    style="@style/settingsActivityInput"
+                    style="@style/formInput"
                     android:hint="@string/address_hint"/>
             </LinearLayout>
             <LinearLayout
-                style="@style/settingsActivityLinearLayoutContainer">
+                style="@style/formLinearLayoutContainer">
                 <TextView
                     android:id="@+id/portLabel"
-                    style="@style/settingsActivityLabel"
+                    style="@style/formLabel"
                     android:text="@string/port_label"/>
                 <EditText
                     android:id="@+id/portInput"
-                    style="@style/settingsActivityInput"
+                    style="@style/formInput"
                     android:inputType="number"
                     android:hint="@string/port_hint"/>
             </LinearLayout>
             <LinearLayout
-                style="@style/settingsActivityLinearLayoutContainer">
+                style="@style/formLinearLayoutContainer">
                 <TextView
                     android:id="@+id/restApiSubPathLabel"
-                    style="@style/settingsActivityLabel"
+                    style="@style/formLabel"
                     android:text="@string/rest_api_sub_path_label"/>
                 <EditText
                     android:id="@+id/restApiSubPathInput"
-                    style="@style/settingsActivityInput"/>
+                    style="@style/formInput"/>
             </LinearLayout>
             <LinearLayout
-                style="@style/settingsActivityLinearLayoutContainer">
+                style="@style/formLinearLayoutContainer">
                 <TextView
                     android:id="@+id/recognizePath"
-                    style="@style/settingsActivityLabel"
+                    style="@style/formLabel"
                     android:text="@string/recognize_path_label"/>
                 <EditText
                     android:id="@+id/recognizeInput"
-                    style="@style/settingsActivityInput"/>
+                    style="@style/formInput"/>
             </LinearLayout>
             <LinearLayout
-                style="@style/settingsActivityLinearLayoutContainer">
+                style="@style/formLinearLayoutContainer">
                 <TextView
                     android:id="@+id/createPath"
-                    style="@style/settingsActivityLabel"
+                    style="@style/formLabel"
                     android:text="@string/create_path_label"/>
                 <EditText
                     android:id="@+id/createInput"
-                    style="@style/settingsActivityInput"/>
+                    style="@style/formInput"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

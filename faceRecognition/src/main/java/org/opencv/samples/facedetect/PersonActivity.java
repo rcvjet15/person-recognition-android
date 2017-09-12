@@ -1,10 +1,13 @@
 package org.opencv.samples.facedetect;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,12 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.opencv.samples.facedetect.utilities.ImageUtils;
 import org.opencv.samples.facedetect.utilities.ResponseMessageRecognize;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by Robi on 10/09/2017.
@@ -107,11 +109,11 @@ public class PersonActivity extends BaseAppActivity {
 
         mSaveBtn = (Button) findViewById(R.id.saveBtn);
 
-//        mImageView = (ImageView) findViewById(R.id.profilePicShow);
-//        mFirstNameEdit = (EditText) findViewById(R.id.firstNameEdit);
-//        mLastNameEdit = (EditText) findViewById(R.id.lastNameEdit);
-//        mAgeEdit = (EditText) findViewById(R.id.ageEdit);
-//        mEmailEdit = (EditText) findViewById(R.id.emailEdit);
+        mImageView = (ImageView) findViewById(R.id.profilePicShow);
+        mFirstNameEdit = (EditText) findViewById(R.id.firstNameInput);
+        mLastNameEdit = (EditText) findViewById(R.id.lastNameInput);
+        mAgeEdit = (EditText) findViewById(R.id.ageInput);
+        mEmailEdit = (EditText) findViewById(R.id.emailInput);
     }
 
     @Override
@@ -140,6 +142,59 @@ public class PersonActivity extends BaseAppActivity {
         }
     }
 
+    public void takePicture(View view){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        // Make sure that device has camera to handle intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null){
+            // Create the File where the photo should go
+            File photoFile = null;
+            try{
+                photoFile = ImageUtils.createImageFile(this);
+                mCurrentPhotoPath = photoFile.getAbsolutePath();
+            }
+            catch (IOException e){
+                e.printStackTrace();
+                Toast.makeText(this, "Unable to create image path.", Toast.LENGTH_SHORT).show();
+            }
+
+            if (photoFile != null){
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE){
+            switch (resultCode){
+                case Activity.RESULT_OK:
+                    try{
+                        mPhoto = ImageUtils.setupPictureVertical(mCurrentPhotoPath);
+                        mImageView.setImageBitmap(mPhoto);
+                    }
+                    catch (IOException e){
+                        showAlertDialog(this, e.getMessage(), "Photo Setup Error");
+                    }
+
+                    break;
+                case Activity.RESULT_CANCELED:
+                    // Go to parent activity if no picture was already taken
+                    if (mImageView.getDrawable() == null){
+                        finish();
+                    }
+                    break;
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     // Called after async task is finished
     private void onBackgroundTaskCompleted(ResponseMessageRecognize result){
         if (result.getStatus() == 1){
@@ -147,21 +202,7 @@ public class PersonActivity extends BaseAppActivity {
         }
     }
 
-    private File createImageFile() throws IOException {
-        // Create image file name
-        String timestamp = new SimpleDateFormat("yyyy_mm_dd_HH_mm_ss").format(new Date());
-        String imageFileName = "JPEG_" + timestamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,
-                ".jpg",
-                storageDir
-        );
 
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
 
 //    private class RecognizeTask extends AsyncTask<Bitmap, String, IResponseMessage> {
 //

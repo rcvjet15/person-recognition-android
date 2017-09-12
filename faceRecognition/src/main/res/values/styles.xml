@@ -8,20 +8,6 @@
         <!--<item name="colorAccent">@color/colorAccent</item>-->
     <!--</style>-->
 
-    <style name="CustomAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/CustomAppActionBar</item>
-    </style>
-
-    <style name="CustomAppActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">#536DFE</item>
-        <item name="android:titleTextStyle">@style/AppTheme.ActionBar.TitleTextStyle</item>
-    </style>
-
-    <style name="AppTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.StatusBar.Title">
-        <item name="android:textColor">#E3F2FD</item>
-    </style>
-
-
     <style name="appButton">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
@@ -46,6 +32,24 @@
         <item name="android:layout_weight">45</item>
     </style>
 
+    <style name="formLinearLayoutContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:weightSum">100</item>
+        <item name="android:paddingTop">10dp</item>
+    </style>
+
+    <style name="formLabel">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">35</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="formInput">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">65</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 
     <!-- Main activity -->
     <style name="mainActivityButton" parent="appButton">
@@ -84,24 +88,7 @@
     </style>
 
     <!-- Settings Activity -->
-    <style name="settingsActivityLinearLayoutContainer">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:weightSum">100</item>
-        <item name="android:paddingTop">10dp</item>
-    </style>
 
-    <style name="settingsActivityLabel">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">35</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="settingsActivityInput">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">65</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
 
 </resources>
 

@@ -20,6 +20,10 @@
     <string name="show_age_label">Age:</string>
     <string name="show_email_label">Email:</string>
     <string name="show_face_encoding_label">Face encoding:</string>
+    <string name="first_name_label">First name</string>
+    <string name="last_name_label">Last name</string>
+    <string name="age_label">Age</string>
+    <string name="email_label">Email</string>
 
     <!-- Users activity-->
     <string name="users_label">Users</string>
