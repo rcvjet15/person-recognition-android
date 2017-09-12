@@ -1,5 +1,10 @@
 package org.opencv.samples.facedetect;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Parcel;
@@ -7,6 +12,11 @@ import android.os.Parcelable;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.JsonReader;
+import android.util.Log;
+import android.widget.Toast;
+
+import org.opencv.samples.facedetect.data.PersonContract;
+import org.opencv.samples.facedetect.data.RecognitionDbHelper;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -193,5 +203,20 @@ public class Person implements Parcelable {
         mFaceEncoding = in.readString();
         mImageBase64 = in.readString();
         mStatus = in.readInt();
+    }
+
+    public long saveToDb(SQLiteDatabase db, RecognitionDbHelper dbHelper) throws SQLiteException {
+
+        db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(PersonContract.PersonEntry.COLUMN_FIRST_NAME, mFirstName);
+        values.put(PersonContract.PersonEntry.COLUMN_LAST_NAME, mLastName);
+        values.put(PersonContract.PersonEntry.COLUMN_AGE, mAge);
+        values.put(PersonContract.PersonEntry.COLUMN_EMAIL, mEmail);
+        values.put(PersonContract.PersonEntry.COLUMN_STATUS, mStatus);
+        values.put(PersonContract.PersonEntry.COLUMN_PROFILE_PIC, convertImageBase64ToByteArray());
+        values.put(PersonContract.PersonEntry.COLUMN_VALID_FROM, System.currentTimeMillis());
+        return  db.insert(PersonContract.PersonEntry.TABLE_NAME, null, values);
     }
 }

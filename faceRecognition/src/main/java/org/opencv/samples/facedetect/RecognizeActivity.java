@@ -95,6 +95,62 @@ public class RecognizeActivity extends BaseAppActivity {
         }
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE){
+            switch (resultCode){
+                case Activity.RESULT_OK:
+                    try{
+                        float degrees = 0;
+                        // Check image rotation and rotate it so it is always vertical
+                        ExifInterface exif = new ExifInterface(mCurrentPhotoPath);
+                        int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+                        switch(exifOrientation){
+                            case ExifInterface.ORIENTATION_NORMAL:
+                                degrees = 0;
+                                break;
+                            case ExifInterface.ORIENTATION_ROTATE_90:
+                                degrees = 90;
+                                break;
+                            case ExifInterface.ORIENTATION_ROTATE_180:
+                                degrees = 180;
+                                break;
+                            case ExifInterface.ORIENTATION_ROTATE_270:
+                                degrees = 270;
+                                break;
+                        }
+
+                        // todo: Install Glide library for efficient Bitmap manipulation
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        // Set image pixels 1/4 of original picture pixels
+                        options.inSampleSize = 4;
+                        mPhoto = BitmapFactory.decodeFile(mCurrentPhotoPath, options);
+
+                        Matrix matrix = new Matrix();
+                        matrix.postRotate(degrees);
+                        // Rotate it to set it vertical
+                        mPhoto = Bitmap.createBitmap(mPhoto, 0, 0, mPhoto.getWidth(), mPhoto.getHeight(), matrix, true);
+                        mImageView.setImageBitmap(mPhoto);
+                    }
+                    catch (IOException e){
+                        showAlertDialog(this, e.getMessage(), "Recognize Activity Error");
+                    }
+
+                    break;
+                case Activity.RESULT_CANCELED:
+                    // Go to parent activity if no picture was already taken
+                    if (mImageView.getDrawable() == null){
+                        finish();
+                    }
+                    break;
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
     public void sendPicture(View view){
         RecognizeTask task = new RecognizeTask(this);
         task.execute(mPhoto);
@@ -126,61 +182,6 @@ public class RecognizeActivity extends BaseAppActivity {
         super.cancel(view);
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE){
-            switch (resultCode){
-                case Activity.RESULT_OK:
-                    try{
-                        float degrees = 0;
-                        // Check image rotation and rotate it so it is always vertical
-                        ExifInterface exif = new ExifInterface(mCurrentPhotoPath);
-                        int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-                        switch(exifOrientation){
-                            case ExifInterface.ORIENTATION_NORMAL:
-                                degrees = 0;
-                                break;
-                            case ExifInterface.ORIENTATION_ROTATE_90:
-                                degrees = 90;
-                                break;
-                            case ExifInterface.ORIENTATION_ROTATE_180:
-                                degrees = 180;
-                                break;
-                            case ExifInterface.ORIENTATION_ROTATE_270:
-                                degrees = 270;
-                                break;
-                        }
-
-                        // todo: Install glide library for efficient Bitmap manipulation
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        // Set image pixels 1/4 of original picture pixels
-                        options.inSampleSize = 4;
-                        mPhoto = BitmapFactory.decodeFile(mCurrentPhotoPath, options);
-
-                        Matrix matrix = new Matrix();
-                        matrix.postRotate(degrees);
-                        // Rotate it to set it vertical
-                        mPhoto = Bitmap.createBitmap(mPhoto, 0, 0, mPhoto.getWidth(), mPhoto.getHeight(), matrix, true);
-                        mImageView.setImageBitmap(mPhoto);
-                    }
-                    catch (IOException e){
-                        showAlertDialog(this, e.getMessage(), "Recognize Activity Error");
-                    }
-
-                    break;
-                case Activity.RESULT_CANCELED:
-                    // Go to parent activity if no picture was already taken
-                    if (mImageView.getDrawable() == null){
-                        finish();
-                    }
-                    break;
-            }
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
     private File createImageFile() throws IOException {
         // Create image file name
         String timestamp = new SimpleDateFormat("yyyy_mm_dd_HH_mm_ss").format(new Date());
@@ -200,7 +201,7 @@ public class RecognizeActivity extends BaseAppActivity {
     private class RecognizeTask extends AsyncTask<Bitmap, String, IResponseMessage> {
 
         private final String SUCCESS_MSG = "Success!";
-        private final String RECOGNIZE_IMAGE_SUBMIT_NAME = "file";
+        private final String RECOGNIZE_IMAGE_SUBMIT_NAME = "profile-pic";
         private String mErrorMsg;
         private URL mUrl;
         private HttpURLConnection mHttpUrlConnection;
@@ -336,7 +337,7 @@ public class RecognizeActivity extends BaseAppActivity {
 
         private byte[] convertImageToByteArray(Bitmap img){
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            mPhoto.compress(Bitmap.CompressFormat.JPEG, 85, bos);
+            mPhoto.compress(Bitmap.CompressFormat.JPEG, 100, bos);
             return bos.toByteArray();
         }
 
