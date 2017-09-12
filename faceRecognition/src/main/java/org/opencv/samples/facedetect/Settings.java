@@ -30,7 +30,7 @@ public class Settings {
     public enum UriType { SERVER_ADDR, CREATE, RECOGNIZE, PEOPLE_API }
 
     private static String sScheme = "http";
-    private static String sAddress = "192.168.1.30";
+    private static String sAddress = "robi-web.ddns.net";
     private static long sPort = 4000;
     private static String sRestApiSubPath = "people-api";
     private static String sRecognizePath = "recognize";
