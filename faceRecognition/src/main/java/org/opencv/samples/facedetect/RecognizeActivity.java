@@ -201,7 +201,6 @@ public class RecognizeActivity extends BaseAppActivity {
     private class RecognizeTask extends AsyncTask<Bitmap, String, IResponseMessage> {
 
         private final String SUCCESS_MSG = "Success!";
-        private final String RECOGNIZE_IMAGE_SUBMIT_NAME = "profile-pic";
         private String mErrorMsg;
         private URL mUrl;
         private HttpURLConnection mHttpUrlConnection;
@@ -325,7 +324,7 @@ public class RecognizeActivity extends BaseAppActivity {
 
             mRequest = new DataOutputStream(mHttpUrlConnection.getOutputStream());
             mRequest.writeBytes(mTwoHyphens + mBoundary + mCrlf);
-            mRequest.writeBytes("Content-Disposition: form-data; name=\"" + RECOGNIZE_IMAGE_SUBMIT_NAME + "\";filename=" + file.getName() + ";" + mCrlf);
+            mRequest.writeBytes("Content-Disposition: form-data; name=\"" + Person.PROFILE_PIC_SUBMIT_PARAM + "\";filename=" + file.getName() + ";" + mCrlf);
             mRequest.writeBytes("Content-Type: image/jpeg" + mCrlf);
             mRequest.writeBytes(mCrlf);
             mRequest.write(imageByteArray);

@@ -97,11 +97,6 @@ public class Settings {
                 uriBuilder.appendPath(sRestApiSubPath);
                 break;
             }
-            case CREATE: {
-                uriBuilder.appendPath(sRestApiSubPath)
-                        .appendPath(sCreatePath);
-                break;
-            }
             case RECOGNIZE: {
                 uriBuilder.appendPath(sRestApiSubPath)
                         .appendPath(sRecognizePath);
@@ -126,7 +121,6 @@ public class Settings {
         settingsMap.put(Settings.KEY_PORT, String.valueOf(sPort));
         settingsMap.put(Settings.KEY_REST_API_SUB_PATH, sRestApiSubPath);
         settingsMap.put(Settings.KEY_RECOGNIZE_PATH, sRecognizePath);
-        settingsMap.put(Settings.KEY_CREATE_PATH, sCreatePath);
 
         db = dbHelper.getWritableDatabase();
         db.beginTransaction();
@@ -210,9 +204,6 @@ public class Settings {
                         break;
                     case Settings.KEY_RECOGNIZE_PATH:
                         Settings.setRecognizePath(value);
-                        break;
-                    case Settings.KEY_CREATE_PATH:
-                        Settings.setCreatePath(value);
                         break;
                 }
             }

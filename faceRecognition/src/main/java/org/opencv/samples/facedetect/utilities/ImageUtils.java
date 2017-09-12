@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.os.Environment;
+import android.util.Base64;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -69,5 +71,50 @@ public class ImageUtils {
         );
 
         return image;
+    }
+
+    public static Bitmap convertImageBase64ToBitmap(String imageBase64){
+        if (imageBase64 != null && imageBase64.length() > 0){
+            byte[] decodedString = Base64.decode(imageBase64, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        }
+        return null;
+    }
+
+    public static byte[] convertImageBase64ToByteArray(String imageBase64){
+        if (imageBase64 != null && imageBase64.length() > 0){
+            return Base64.decode(imageBase64, Base64.DEFAULT);
+        }
+        return null;
+    }
+
+    public static String convertBitmapToBase64(Bitmap bitmap){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    public static String convertImageFileToBase64(File file){
+
+        if (file == null && file.exists() == false) return null;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        // Set image pixels 1/<value> of original picture pixels
+        options.inSampleSize = 1;
+        Bitmap photo = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    public static byte[] convertBitmapToByteArray(Bitmap bitmap){
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+        return bos.toByteArray();
     }
 }

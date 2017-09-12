@@ -67,16 +67,6 @@
                     android:id="@+id/recognizeInput"
                     style="@style/formInput"/>
             </LinearLayout>
-            <LinearLayout
-                style="@style/formLinearLayoutContainer">
-                <TextView
-                    android:id="@+id/createPath"
-                    style="@style/formLabel"
-                    android:text="@string/create_path_label"/>
-                <EditText
-                    android:id="@+id/createInput"
-                    style="@style/formInput"/>
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
     <LinearLayout

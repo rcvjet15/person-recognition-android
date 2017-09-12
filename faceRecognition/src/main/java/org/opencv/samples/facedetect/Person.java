@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import org.opencv.samples.facedetect.data.PersonContract;
 import org.opencv.samples.facedetect.data.RecognitionDbHelper;
+import org.opencv.samples.facedetect.utilities.ImageUtils;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -28,6 +29,12 @@ import java.sql.Timestamp;
 
 // Implements Parcelable interface that allows to pass Person object in Intent
 public class Person implements Parcelable {
+
+    public static final String FIRST_NAME_SUBMIT_PARAM = "first_name";
+    public static final String LAST_NAME_SUBMIT_PARAM = "last_name";
+    public static final String AGE_SUBMIT_PARAM = "age";
+    public static final String EMAIL_SUBMIT_PARAM = "email";
+    public static final String PROFILE_PIC_SUBMIT_PARAM = "profile-pic";
 
     public static Person createFromJson(JsonReader jsonReader) throws IOException{
         Person person = new Person();
@@ -61,21 +68,6 @@ public class Person implements Parcelable {
 
         jsonReader.endObject();
         return person;
-    }
-
-    public Bitmap convertImageBase64ToBitmap(){
-        if (mImageBase64 != null && mImageBase64.length() > 0){
-            byte[] decodedString = Base64.decode(mImageBase64, Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        }
-        return null;
-    }
-
-    public byte[] convertImageBase64ToByteArray(){
-        if (mImageBase64 != null && mImageBase64.length() > 0){
-            return Base64.decode(mImageBase64, Base64.DEFAULT);
-        }
-        return null;
     }
 
     private String mFirstName;
@@ -165,7 +157,7 @@ public class Person implements Parcelable {
     }
 
 
-    // Parceable interface implemented methods
+    // Parcelable interface implemented methods
     @Override
     public int describeContents() {
         return 0;
@@ -215,7 +207,7 @@ public class Person implements Parcelable {
         values.put(PersonContract.PersonEntry.COLUMN_AGE, mAge);
         values.put(PersonContract.PersonEntry.COLUMN_EMAIL, mEmail);
         values.put(PersonContract.PersonEntry.COLUMN_STATUS, mStatus);
-        values.put(PersonContract.PersonEntry.COLUMN_PROFILE_PIC, convertImageBase64ToByteArray());
+        values.put(PersonContract.PersonEntry.COLUMN_PROFILE_PIC, ImageUtils.convertImageBase64ToByteArray(mImageBase64));
         values.put(PersonContract.PersonEntry.COLUMN_VALID_FROM, System.currentTimeMillis());
         return  db.insert(PersonContract.PersonEntry.TABLE_NAME, null, values);
     }
