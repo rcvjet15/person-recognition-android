@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.opencv.samples.facedetect.Settings;

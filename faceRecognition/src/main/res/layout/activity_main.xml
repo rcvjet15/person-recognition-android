@@ -66,10 +66,10 @@
                     android:onClick="addUser"
                     android:text="@string/add_btn"/>
                 <Button
-                    android:id="@+id/usersButton"
+                    android:id="@+id/peopleButton"
                     style="@style/mainActivityButtonLeft"
-                    android:text="@string/users_btn"
-                    android:onClick="serverPart"/>
+                    android:text="@string/people_btn"
+                    android:onClick="people"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -79,7 +79,8 @@
                 <Button
                     android:id="@+id/galleryButton"
                     style="@style/mainActivityButtonRight"
-                    android:text="@string/gallery_btn"/>
+                    android:text="@string/gallery_btn"
+                    android:onClick="gallery"/>
                 <Button
                     android:id="@+id/aboutButton"
                     style="@style/mainActivityButtonRight"

@@ -75,12 +75,12 @@ public class SettingsActivity extends BaseAppActivity {
     public void save(View view){
         if (!validateData()) return;
 
-        Settings.setScheme(mScheme.getSelectedItem().toString());
-        Settings.setAddress(mAddress.getText().toString());
-        Settings.setPort(Long.parseLong(mPort.getText().toString()));
-        Settings.setRestApiSubPath(mRestApiSubPath.getText().toString());
-        Settings.setRecognizePath(mRecognizePath.getText().toString());
-        Settings.setCreatePath(mCreatePath.getText().toString());
+        Settings.setScheme(mScheme.getSelectedItem().toString().trim());
+        Settings.setAddress(mAddress.getText().toString().trim());
+        Settings.setPort(Long.parseLong(mPort.getText().toString().trim()));
+        Settings.setRestApiSubPath(mRestApiSubPath.getText().toString().trim());
+        Settings.setRecognizePath(mRecognizePath.getText().toString().trim());
+        Settings.setCreatePath(mCreatePath.getText().toString().trim());
 
         // Save settings into database
         Settings.saveSettings(db, dbHelper);

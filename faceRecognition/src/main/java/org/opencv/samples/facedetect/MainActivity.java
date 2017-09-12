@@ -5,13 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import java.text.SimpleDateFormat;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v4.graphics.BitmapCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +34,8 @@ public class MainActivity extends BaseAppActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
     }
 
     public void faceRecognition(View view){
@@ -41,10 +46,18 @@ public class MainActivity extends BaseAppActivity {
     }
 
     public void addUser(View view){
-        Context context = this;
-        Class destinationClass = UsersActivity.class;
-        Intent intent = new Intent(context, destinationClass);
-        startActivity(intent);
+        showAlertDialog(this, "Not Implemented!", "Error");
+        return;
+    }
+
+    public void gallery(View view){
+        showAlertDialog(this, "Not Implemented!", "Error");
+        return;
+    }
+
+    public void people(View view){
+        showAlertDialog(this, "Not Implemented!", "Error");
+        return;
     }
 
     public void aboutUs(View view){
@@ -53,12 +66,4 @@ public class MainActivity extends BaseAppActivity {
         Intent intent = new Intent(context, destinationClass);
         startActivity(intent);
     }
-
-    //    public void settings(View view){
-//        Context context = this;
-//        Class destinationClass = SettingsActivity.class;
-//        Intent intent = new Intent(context, destinationClass);
-//        startActivity(intent);
-//    }
-
 }

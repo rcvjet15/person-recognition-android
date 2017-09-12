@@ -5,9 +5,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
@@ -16,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import org.opencv.samples.facedetect.data.RecognitionDbHelper;
 
@@ -26,6 +29,8 @@ import org.opencv.samples.facedetect.data.RecognitionDbHelper;
 // Base Activity that implemenets global menu. All other app activities must extend from this activity
 public abstract class BaseAppActivity extends Activity {
 
+    protected static boolean firstTime = true;
+
     protected RecognitionDbHelper dbHelper;
     protected SQLiteDatabase db;
 
@@ -33,7 +38,7 @@ public abstract class BaseAppActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        dbHelper = new RecognitionDbHelper(this);
+        doAtStartUp();
 
         // Don't show back button on action bar for MainActivity
         if (this instanceof MainActivity == false) {
@@ -110,7 +115,23 @@ public abstract class BaseAppActivity extends Activity {
         dialog.show();
     }
 
+    /**
+     * Cancel method that will be called when cancel button is clicked.
+     * @param view View parameter that clicked button sends.
+     */
     protected void cancel(View view){
         showStayOrLeavePromptDialog(this, "Do you want to leave?", "Changes not saved");
+    }
+
+
+    /**
+     * Method that will be called only when app is entered.
+     */
+    public void doAtStartUp(){
+        if (firstTime){
+            dbHelper = new RecognitionDbHelper(this);
+            Settings.fetchSettingsFromDb(db, dbHelper);
+            firstTime = false;
+        }
     }
 }

@@ -96,10 +96,8 @@ public class RecognizeActivity extends BaseAppActivity {
     }
 
     public void sendPicture(View view){
-
         RecognizeTask task = new RecognizeTask(this);
         task.execute(mPhoto);
-
     }
 
     // Called after recognize task is finished
@@ -134,7 +132,6 @@ public class RecognizeActivity extends BaseAppActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE){
             switch (resultCode){
                 case Activity.RESULT_OK:
-                    mPhoto = BitmapFactory.decodeFile(mCurrentPhotoPath);
                     try{
                         float degrees = 0;
                         // Check image rotation and rotate it so it is always vertical
@@ -155,20 +152,27 @@ public class RecognizeActivity extends BaseAppActivity {
                                 break;
                         }
 
+                        // todo: Install glide library for efficient Bitmap manipulation
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        // Set image pixels 1/4 of original picture pixels
+                        options.inSampleSize = 4;
+                        mPhoto = BitmapFactory.decodeFile(mCurrentPhotoPath, options);
+
                         Matrix matrix = new Matrix();
                         matrix.postRotate(degrees);
+                        // Rotate it to set it vertical
                         mPhoto = Bitmap.createBitmap(mPhoto, 0, 0, mPhoto.getWidth(), mPhoto.getHeight(), matrix, true);
                         mImageView.setImageBitmap(mPhoto);
                     }
                     catch (IOException e){
-
+                        showAlertDialog(this, e.getMessage(), "Recognize Activity Error");
                     }
 
                     break;
                 case Activity.RESULT_CANCELED:
                     // Go to parent activity if no picture was already taken
                     if (mImageView.getDrawable() == null){
-                        mButtonCancel.performClick();
+                        finish();
                     }
                     break;
             }
@@ -295,6 +299,10 @@ public class RecognizeActivity extends BaseAppActivity {
             if (mErrorMsg != null && mErrorMsg.length() > 0)
                 Toast.makeText(mCallingActivity, mErrorMsg, Toast.LENGTH_SHORT).show();
 
+            if (mHttpUrlConnection != null) {
+                mHttpUrlConnection.disconnect();
+            }
+
             hideProgressDialog();
         }
 
@@ -328,28 +336,27 @@ public class RecognizeActivity extends BaseAppActivity {
 
         private byte[] convertImageToByteArray(Bitmap img){
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            mPhoto.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            mPhoto.compress(Bitmap.CompressFormat.JPEG, 85, bos);
             return bos.toByteArray();
         }
 
         private void checkServerAvailability() throws ConnectException {
-            HttpURLConnection conn = null;
             Boolean available = null;
             try{
                 // Test with this URL because RECOGNIZE uri takes POST request
                 URL url = new URL(Settings.UriFactory(Settings.UriType.PEOPLE_API).toString());
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setConnectTimeout(10000);
-                conn.connect();
-                available = (conn.getResponseCode() == 200);
+                mHttpUrlConnection = (HttpURLConnection) url.openConnection();
+                mHttpUrlConnection.setConnectTimeout(10000);
+                mHttpUrlConnection.connect();
+                available = (mHttpUrlConnection.getResponseCode() == 200);
 
             }
             catch (IOException e){
                 available = false;
             }
             finally {
-                if (conn != null){
-                    conn.disconnect();
+                if (mHttpUrlConnection != null){
+                    mHttpUrlConnection.disconnect();
                 }
             }
 

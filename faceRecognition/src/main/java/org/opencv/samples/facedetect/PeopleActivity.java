@@ -3,7 +3,7 @@ package org.opencv.samples.facedetect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-public class UsersActivity extends AppCompatActivity {
+public class PeopleActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
