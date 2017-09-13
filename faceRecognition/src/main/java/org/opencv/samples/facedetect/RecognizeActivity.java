@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.opencv.samples.facedetect.utilities.ImageUtils;
 import org.opencv.samples.facedetect.utilities.ResponseMessage;
 import org.opencv.samples.facedetect.utilities.RecognizeJsonUtils;
 import org.opencv.samples.facedetect.utilities.ResponseMessageRecognize;
@@ -48,7 +49,9 @@ import java.util.List;
 public class RecognizeActivity extends BaseAppActivity {
 
     private Bitmap mPhoto;
-    private String mCurrentPhotoPath;
+    // File that will get image after camera takes picture
+    private File mCurrentImageFile;
+
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     // private static final int CAMERA_REQUEST = 1888;
 
@@ -75,20 +78,18 @@ public class RecognizeActivity extends BaseAppActivity {
 
         // Make sure that device has camera to handle intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null){
-            // Create the File where the photo should go
-            File photoFile = null;
             try{
-                photoFile = createImageFile();
+                mCurrentImageFile = ImageUtils.createImageFile(this);
             }
             catch (IOException e){
                 e.printStackTrace();
                 Toast.makeText(this, "Unable to create image path.", Toast.LENGTH_SHORT).show();
             }
 
-            if (photoFile != null){
+            if (mCurrentImageFile != null){
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "com.example.android.fileprovider",
-                        photoFile);
+                        mCurrentImageFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
@@ -102,35 +103,7 @@ public class RecognizeActivity extends BaseAppActivity {
             switch (resultCode){
                 case Activity.RESULT_OK:
                     try{
-                        float degrees = 0;
-                        // Check image rotation and rotate it so it is always vertical
-                        ExifInterface exif = new ExifInterface(mCurrentPhotoPath);
-                        int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-                        switch(exifOrientation){
-                            case ExifInterface.ORIENTATION_NORMAL:
-                                degrees = 0;
-                                break;
-                            case ExifInterface.ORIENTATION_ROTATE_90:
-                                degrees = 90;
-                                break;
-                            case ExifInterface.ORIENTATION_ROTATE_180:
-                                degrees = 180;
-                                break;
-                            case ExifInterface.ORIENTATION_ROTATE_270:
-                                degrees = 270;
-                                break;
-                        }
-
-                        // todo: Install Glide library for efficient Bitmap manipulation
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        // Set image pixels 1/4 of original picture pixels
-                        options.inSampleSize = 4;
-                        mPhoto = BitmapFactory.decodeFile(mCurrentPhotoPath, options);
-
-                        Matrix matrix = new Matrix();
-                        matrix.postRotate(degrees);
-                        // Rotate it to set it vertical
-                        mPhoto = Bitmap.createBitmap(mPhoto, 0, 0, mPhoto.getWidth(), mPhoto.getHeight(), matrix, true);
+                        mPhoto = ImageUtils.setupPictureVertical(mCurrentImageFile.getAbsolutePath());
 
                         RoundedBitmapDrawable roundBitmap = RoundedBitmapDrawableFactory.create(getResources(), mPhoto);
                         roundBitmap.setCircular(true);
@@ -186,25 +159,8 @@ public class RecognizeActivity extends BaseAppActivity {
         super.cancel(view);
     }
 
-    private File createImageFile() throws IOException {
-        // Create image file name
-        String timestamp = new SimpleDateFormat("yyyy_mm_dd_HH_mm_ss").format(new Date());
-        String imageFileName = "JPEG_" + timestamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,
-                ".jpg",
-                storageDir
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
     private class RecognizeTask extends AsyncTask<Bitmap, String, ResponseMessage> {
 
-        private final String SUCCESS_MSG = "Success!";
         private String mErrorMsg;
         private URL mUrl;
         private HttpURLConnection mHttpUrlConnection;
@@ -323,12 +279,11 @@ public class RecognizeActivity extends BaseAppActivity {
         }
 
         private void setupPostBody() throws IOException{
-            File file = new File(mCurrentPhotoPath);
             byte[] imageByteArray = convertImageToByteArray(mPhoto);
 
             mRequest = new DataOutputStream(mHttpUrlConnection.getOutputStream());
             mRequest.writeBytes(mTwoHyphens + mBoundary + mCrlf);
-            mRequest.writeBytes("Content-Disposition: form-data; name=\"" + Person.PROFILE_PIC_SUBMIT_PARAM + "\";filename=" + file.getName() + ";" + mCrlf);
+            mRequest.writeBytes("Content-Disposition: form-data; name=\"" + Person.PROFILE_PIC_SUBMIT_PARAM + "\";filename=" + mCurrentImageFile.getName() + ";" + mCrlf);
             mRequest.writeBytes("Content-Type: image/jpeg" + mCrlf);
             mRequest.writeBytes(mCrlf);
             mRequest.write(imageByteArray);
