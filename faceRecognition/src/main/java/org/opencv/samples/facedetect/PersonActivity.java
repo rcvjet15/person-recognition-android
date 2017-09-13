@@ -19,9 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.opencv.samples.facedetect.utilities.PersonInsertOrEditJsonUtils;
 import org.opencv.samples.facedetect.utilities.ResponseMessage;
 import org.opencv.samples.facedetect.utilities.ImageUtils;
 import org.opencv.samples.facedetect.utilities.RecognizeJsonUtils;
+import org.opencv.samples.facedetect.utilities.ResponseMessagePersonInsertOrEdit;
 import org.opencv.samples.facedetect.utilities.ResponseMessageRecognize;
 
 import java.io.BufferedInputStream;
@@ -72,12 +74,12 @@ public class PersonActivity extends BaseAppActivity {
             // Called from RecognizeActivity to save recognized person
             if (bundleExtras.containsKey(Intent.ACTION_INSERT)){
                 setupInsertActivity(bundleExtras);
+                this.getActionBar().setTitle(String.format("%s %s", mPerson.getFirstName(), mPerson.getLastName()));
             }
             else if (bundleExtras.containsKey(Intent.ACTION_INSERT_OR_EDIT)){
                 setupInsertOrEditActivity(bundleExtras);
+                this.getActionBar().setTitle("Add Person");
             }
-
-            if (mPerson != null){ this.getActionBar().setTitle(String.format("%s %s", mPerson.getFirstName(), mPerson.getLastName())); }
         }
     }
 
@@ -118,7 +120,6 @@ public class PersonActivity extends BaseAppActivity {
         setContentView(R.layout.activity_person_insert_or_edit);
 
         mActionFooter = (LinearLayout) findViewById(R.id.actionFooter);
-        mActionFooter.setVisibility(View.VISIBLE);
 
         mSaveBtn = (Button) findViewById(R.id.saveBtn);
 
@@ -140,14 +141,14 @@ public class PersonActivity extends BaseAppActivity {
 
         if (!validateData()){ return; }
 
-        mPerson.setImageBase64(ImageUtils.convertImageFileToBase64(mCurrentImageFile));
+        mPerson.setImageBase64(ImageUtils.convertBitmapToBase64(mPhoto));
         mPerson.setFirstName(mFirstNameEdit.getText().toString());
         mPerson.setLastName(mLastNameEdit.getText().toString());
         mPerson.setAge(Integer.parseInt(mAgeEdit.getText().toString()));
         mPerson.setEmail(mEmailEdit.getText().toString());
 
         SetupPersonTask task = new SetupPersonTask(this);
-        task.execute(mPerson);
+        task.execute();
     }
 
     public void takePicture(View view){
@@ -201,26 +202,23 @@ public class PersonActivity extends BaseAppActivity {
     }
 
     // Called after async task is finished (callback method)
-    private void onBackgroundTaskCompleted(ResponseMessageRecognize result){
-        if (result.getStatus() == 1){
-            try{
-                long newRowId = mPerson.saveToDb(db, dbHelper);
+    private void onBackgroundTaskCompleted(ResponseMessagePersonInsertOrEdit result){
+        if (result.getStatus() > 0){
+            Toast.makeText(this, String.format("Successfully created %s %s", mPerson.getFirstName(), mPerson.getLastName()), Toast.LENGTH_SHORT).show();
 
-                if (newRowId > 0){
-                    Toast.makeText(this, String.format("Successfully created %s %s", mPerson.getFirstName(), mPerson.getLastName()), Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(this, String.format("Error creating %s %s", mPerson.getFirstName(), mPerson.getLastName()), Toast.LENGTH_SHORT).show();
-                }
+            // Go to MainActivity with destroying all activities between destination and this
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
 
-                // Go to MainActivity with destroying all activities between destination and this
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+        }
+        else{
+            // Show alert dialog if status is not 1
+            ResponseMessagePersonInsertOrEdit responseMsgObj = result;
+            if (responseMsgObj.getStatus() != 1){
+                showAlertDialog(this, responseMsgObj.getResponseMsg(), "Error");
             }
-            catch (SQLException e){
-                showAlertDialog(this, e.getMessage(), e.getClass().toString());
-            }
+
         }
     }
 
@@ -253,7 +251,7 @@ public class PersonActivity extends BaseAppActivity {
         return valid;
     }
 
-    private class SetupPersonTask extends AsyncTask<Person, String, ResponseMessage> {
+    private class SetupPersonTask extends AsyncTask<Void, String, ResponseMessage> {
 
         private String mErrorMsg;
         private URL mUrl;
@@ -279,7 +277,7 @@ public class PersonActivity extends BaseAppActivity {
         }
 
         @Override
-        protected ResponseMessage doInBackground(Person... people) {
+        protected ResponseMessagePersonInsertOrEdit doInBackground(Void... params) {
             try {
                 publishProgress("Checking server availability...");
 
@@ -296,12 +294,28 @@ public class PersonActivity extends BaseAppActivity {
                 InputStream responseStream = new BufferedInputStream(mHttpUrlConnection.getInputStream());
 
                 publishProgress("Parsing server response...");
-                RecognizeJsonUtils jsonUtils = new RecognizeJsonUtils();
+                PersonInsertOrEditJsonUtils jsonUtils = new PersonInsertOrEditJsonUtils();
                 List<ResponseMessage> messageList = jsonUtils.readJsonStream(responseStream);
 
-                publishProgress("Storing person...");
                 if (messageList.size() > 0){
-                    if (messageList.get(0));
+
+                    ResponseMessagePersonInsertOrEdit respMsg = (ResponseMessagePersonInsertOrEdit)messageList.get(0);
+
+                    if (respMsg.getStatus() == 1){
+                        publishProgress("Storing person...");
+
+                        long id = mPerson.saveToDb(db, dbHelper);
+
+                        if (id > 0){
+                            mPerson.setId(id);
+                            return new ResponseMessagePersonInsertOrEdit(1, String.format("Successfully created %s %s", mPerson.getFirstName(), mPerson.getLastName()));
+                        }
+
+                        throw new SQLException(String.format("Error adding %s %s to local database.", mPerson.getFirstName(), mPerson.getLastName()));
+                    }
+                    else{
+                        throw new IllegalArgumentException(respMsg.getResponseMsg());
+                    }
                 }
                 else{
                     throw new Exception("Server returned empty response.");
@@ -309,16 +323,22 @@ public class PersonActivity extends BaseAppActivity {
             }
             catch (ConnectException e){
                 // Simulate server response
-                return new ResponseMessageRecognize(null, null, -1, "Server is not available.");
+                return new ResponseMessagePersonInsertOrEdit(-1, "Server is not available.");
+            }
+            catch (SQLException e){
+                return new ResponseMessagePersonInsertOrEdit(-1, e.getMessage());
             }
             catch (MalformedURLException e){
-                return new ResponseMessageRecognize(null, null, -1, "Recognize URL is invalid.");
+                return new ResponseMessagePersonInsertOrEdit(-1, "Recognize URL is invalid.");
+            }
+            catch (IllegalArgumentException e){
+                return new ResponseMessagePersonInsertOrEdit(-1, e.getMessage());
             }
             catch (IOException e){
-                return new ResponseMessageRecognize(null, null, -1, String.format("%s\n%s", e.getMessage(), "Server Error."));
+                return new ResponseMessagePersonInsertOrEdit(-1, String.format("%s\n%s", e.getMessage(), "Server Error."));
             }
             catch (Exception e){
-                return new ResponseMessageRecognize(null, null, -1, String.format("%s\n%s", e.getMessage(), "Unknown Error."));
+                return new ResponseMessagePersonInsertOrEdit(-1, String.format("%s\n%s", e.getMessage(), "Unknown Error."));
             }
             finally {
                 if (mHttpUrlConnection != null){
@@ -338,14 +358,8 @@ public class PersonActivity extends BaseAppActivity {
             super.onPostExecute(result);
             hideProgressDialog();
 
-            // Show alert dialog if status is not 1
-            ResponseMessageRecognize responseMsgObj = (ResponseMessageRecognize)result;
-            if (responseMsgObj.getStatus() != 1){
-                showAlertDialog(mCallingActivity, responseMsgObj.getResponseMsg(), "Error");
-            }
-
             // Callback method, pass result to calling activity
-            mCallingActivity.onBackgroundTaskCompleted((ResponseMessageRecognize) result);
+            mCallingActivity.onBackgroundTaskCompleted((ResponseMessagePersonInsertOrEdit) result);
         }
 
         @Override

@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -129,7 +131,11 @@ public class RecognizeActivity extends BaseAppActivity {
                         matrix.postRotate(degrees);
                         // Rotate it to set it vertical
                         mPhoto = Bitmap.createBitmap(mPhoto, 0, 0, mPhoto.getWidth(), mPhoto.getHeight(), matrix, true);
-                        mImageView.setImageBitmap(mPhoto);
+
+                        RoundedBitmapDrawable roundBitmap = RoundedBitmapDrawableFactory.create(getResources(), mPhoto);
+                        roundBitmap.setCircular(true);
+                        mImageView.setImageDrawable(roundBitmap);
+
                     }
                     catch (IOException e){
                         showAlertDialog(this, e.getMessage(), "Photo Setup Error");

@@ -32,6 +32,20 @@
         <item name="android:layout_weight">45</item>
     </style>
 
+    <style name="takePictureFooterButton" parent="appButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">33</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="takePictureFooterTakePictureButton" parent="appButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">65dp</item>
+        <item name="android:layout_weight">30</item>
+        <item name="android:layout_marginTop">13dp</item>
+    </style>
+
     <style name="formLinearLayoutContainer">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -51,6 +65,12 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="lineSeparator">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/subBgColor</item>
+    </style>
+
     <!-- Main activity -->
     <style name="mainActivityButton" parent="appButton">
         <item name="android:layout_width">match_parent</item>
@@ -67,12 +87,7 @@
     </style>
 
     <!-- Recognize activity -->
-    <style name="recognizeActivityButton" parent="appButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">33</item>
-        <item name="android:layout_gravity">center_vertical</item>
-    </style>
+
 
     <!-- Person activity -->
     <style name="textViewPersonData">

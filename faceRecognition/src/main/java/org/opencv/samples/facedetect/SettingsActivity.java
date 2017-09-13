@@ -27,7 +27,6 @@ public class SettingsActivity extends BaseAppActivity {
     private EditText mPort;
     private EditText mRestApiSubPath;
     private EditText mRecognizePath;
-    private EditText mCreatePath;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +47,6 @@ public class SettingsActivity extends BaseAppActivity {
         mPort = (EditText) findViewById(R.id.portInput);
         mRestApiSubPath = (EditText) findViewById(R.id.restApiSubPathInput);
         mRecognizePath = (EditText) findViewById(R.id.recognizeInput);
-        mCreatePath = (EditText) findViewById(R.id.createInput);
 
         // Fetch settings from db
         Settings.fetchSettingsFromDb(db, dbHelper);
@@ -63,7 +61,6 @@ public class SettingsActivity extends BaseAppActivity {
         mPort.setText(Settings.getPort().toString());
         mRestApiSubPath.setText(Settings.getRestApiSubPath());
         mRecognizePath.setText(Settings.getRecognizePath());
-        mCreatePath.setText(Settings.getCreatePath());
 
     }
 
@@ -80,7 +77,6 @@ public class SettingsActivity extends BaseAppActivity {
         Settings.setPort(Long.parseLong(mPort.getText().toString().trim()));
         Settings.setRestApiSubPath(mRestApiSubPath.getText().toString().trim());
         Settings.setRecognizePath(mRecognizePath.getText().toString().trim());
-        Settings.setCreatePath(mCreatePath.getText().toString().trim());
 
         // Save settings into database
         Settings.saveSettings(db, dbHelper);
@@ -106,10 +102,6 @@ public class SettingsActivity extends BaseAppActivity {
         }
         else if (mRecognizePath.getText().length() == 0){
             errorMsg = String.format("%s cannot be empty.", this.getString(R.string.recognize_path_label));
-            valid = false;
-        }
-        else if (mCreatePath.getText().length() == 0){
-            errorMsg = String.format("%s cannot be empty.", this.getString(R.string.create_path_label));
             valid = false;
         }
 

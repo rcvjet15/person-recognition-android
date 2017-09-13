@@ -6,7 +6,7 @@
 
     <color name="mainBgColor">#536DFE</color>
     <!--<color name="subBgColor">#82B1FF</color>-->
-    <color name="subBgColor">#ffffff</color>
+    <color name="subBgColor">#C6E2FF</color>
 
     <color name="appBtnColor">#8C9EFF</color>
     <color name="appBtnTextColor">#E3F2FD</color>

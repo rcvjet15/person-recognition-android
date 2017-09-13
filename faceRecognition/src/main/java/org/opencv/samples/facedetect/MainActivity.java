@@ -44,8 +44,12 @@ public class MainActivity extends BaseAppActivity {
     }
 
     public void addUser(View view){
-        showAlertDialog(this, "Not Implemented!", "Error");
-        return;
+        Context context = this;
+        Class destinationClass = PersonActivity.class;
+        Intent intent = new Intent(context, destinationClass);
+        // If update feature is added, then crate two constants that will define insert or edit code
+        intent.putExtra(Intent.ACTION_INSERT_OR_EDIT, "insert");
+        startActivity(intent);
     }
 
     public void gallery(View view){

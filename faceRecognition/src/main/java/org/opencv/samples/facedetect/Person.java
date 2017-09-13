@@ -70,6 +70,7 @@ public class Person implements Parcelable {
         return person;
     }
 
+    private long mId;
     private String mFirstName;
     private String mLastName;
     private int mAge;
@@ -79,6 +80,14 @@ public class Person implements Parcelable {
     private int mStatus;
     private Timestamp mValidFrom;
     private Timestamp mValidTo;
+
+    public long getId(){
+        return mId;
+    }
+
+    public void setId(long id){
+        mId = id;
+    }
 
     public String getFirstName(){
         return mFirstName;

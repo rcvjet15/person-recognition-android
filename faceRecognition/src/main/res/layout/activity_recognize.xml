@@ -28,7 +28,7 @@
 
         <Button
             android:id="@+id/cancelSendBtn"
-            style="@style/recognizeActivityButton"
+            style="@style/takePictureFooterButton"
             android:onClick="cancel"
             android:text="@string/cancel"/>
 
@@ -41,10 +41,7 @@
 
         <ImageButton
             android:id="@+id/takePictureFromCamera"
-            android:layout_width="0dp"
-            android:layout_height="65dp"
-            android:layout_weight="30"
-            android:layout_marginTop="13dp"
+            style="@style/takePictureFooterTakePictureButton"
             android:background="@drawable/take_picture_button"
             android:onClick="takePicture" />
 
@@ -57,7 +54,7 @@
 
         <Button
             android:id="@+id/sendPictureBtn"
-            style="@style/recognizeActivityButton"
+            style="@style/takePictureFooterButton"
             android:onClick="sendPicture"
             android:text="@string/send_photo"/>
     </LinearLayout>
