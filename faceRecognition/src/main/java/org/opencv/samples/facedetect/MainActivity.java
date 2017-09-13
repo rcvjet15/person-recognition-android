@@ -22,7 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import org.opencv.samples.facedetect.utilities.RecognizeJsonUtils;
+import org.opencv.samples.facedetect.utilities.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class MainActivity extends BaseAppActivity {
         startActivity(intent);
     }
 
-    public void addUser(View view){
+    public void addPerson(View view){
         Context context = this;
         Class destinationClass = PersonActivity.class;
         Intent intent = new Intent(context, destinationClass);
@@ -58,8 +58,10 @@ public class MainActivity extends BaseAppActivity {
     }
 
     public void people(View view){
-        showAlertDialog(this, "Not Implemented!", "Error");
-        return;
+        Context context = this;
+        Class destinationClass = PeopleActivity.class;
+        Intent intent = new Intent(context, destinationClass);
+        startActivity(intent);
     }
 
     public void aboutUs(View view){

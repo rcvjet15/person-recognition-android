@@ -7,5 +7,5 @@
         android:id="@+id/menu_settings"
         android:orderInCategory="1"
         android:title="Settings"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
 </menu>

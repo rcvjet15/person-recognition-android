@@ -44,6 +44,9 @@
         <item>https</item>
     </string-array>
 
+    <!-- People activity -->
+    <string name="people_label">People</string>
+
     <!-- About Us activity-->
     <string name="about_us_label">About Us</string>
 

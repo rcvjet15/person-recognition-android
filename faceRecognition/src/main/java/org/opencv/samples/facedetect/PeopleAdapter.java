@@ -80,7 +80,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleAdap
         return mCursor != null ? mCursor.getCount() : 0;
     }
 
-    void swapCursor(Cursor newCursor){
+    public void swapCursor(Cursor newCursor){
         mCursor = newCursor;
         notifyDataSetChanged();
     }
@@ -94,7 +94,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleAdap
             super(view);
 
             profilePic = (ImageView) view.findViewById(R.id.personItemProfilePic);
-            personSummary = (TextView) view.findViewById(R.id.personItemData);
+            personSummary = (TextView) view.findViewById(R.id.personItemSummary);
             view.setOnClickListener(this);
         }
 

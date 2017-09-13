@@ -80,11 +80,11 @@ public class PersonActivity extends BaseAppActivity {
             // Called from RecognizeActivity to save recognized person
             if (bundleExtras.containsKey(Intent.ACTION_INSERT)){
                 setupInsertActivity(bundleExtras);
-                this.getActionBar().setTitle(String.format("%s %s", mPerson.getFirstName(), mPerson.getLastName()));
+                this.getSupportActionBar().setTitle(String.format("%s %s", mPerson.getFirstName(), mPerson.getLastName()));
             }
             else if (bundleExtras.containsKey(Intent.ACTION_INSERT_OR_EDIT)){
                 setupInsertOrEditActivity(bundleExtras);
-                this.getActionBar().setTitle("Add Person");
+                this.getSupportActionBar().setTitle("Add Person");
             }
         }
     }

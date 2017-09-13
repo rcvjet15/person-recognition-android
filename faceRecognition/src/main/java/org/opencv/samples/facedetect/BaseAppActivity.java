@@ -35,7 +35,7 @@ import java.util.List;
  */
 
 // Base Activity that implemenets global menu. All other app activities must extend from this activity
-public abstract class BaseAppActivity extends Activity {
+public abstract class BaseAppActivity extends AppCompatActivity {
 
     protected static final int REQUEST_CAMERA_PERMISSION_CODE = 100;
     protected static final int REQUEST_WRITE_EXTERNAL_PERMISSION_CODE = 200;
@@ -55,7 +55,7 @@ public abstract class BaseAppActivity extends Activity {
 
         // Don't show back button on action bar for MainActivity
         if (this instanceof MainActivity == false) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 

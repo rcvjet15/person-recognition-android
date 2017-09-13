@@ -61,7 +61,7 @@
                 <Button
                     android:id="@+id/addButton"
                     style="@style/mainActivityButtonLeft"
-                    android:onClick="addUser"
+                    android:onClick="addPerson"
                     android:text="@string/add_btn"/>
                 <Button
                     android:id="@+id/peopleButton"
