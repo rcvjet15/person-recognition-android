@@ -4,13 +4,17 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.SQLException;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,6 +65,8 @@ public class PersonActivity extends BaseAppActivity {
     private Bitmap mPhoto;
     private File mCurrentImageFile;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+    // Flag to check if person picture was taken.
+    private boolean imageTaken = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,7 +110,8 @@ public class PersonActivity extends BaseAppActivity {
 
         mPerson = extras.getParcelable(Intent.ACTION_INSERT);
 
-        mImageView.setImageBitmap(ImageUtils.convertImageBase64ToBitmap(mPerson.getImageBase64()));
+        // Set profile picture as circle
+        setProfilePicture();
         mFirstNameText.setText(String.format("%s %s", mFirstNameText.getText(), mPerson.getFirstName()));
         mLastNameText.setText(String.format("%s %s", mLastNameText.getText(), mPerson.getLastName()));
         mAgeText.setText(String.format("%s %d", mAgeText.getText(), mPerson.getAge()));
@@ -129,12 +136,37 @@ public class PersonActivity extends BaseAppActivity {
         mAgeEdit = (EditText) findViewById(R.id.ageInput);
         mEmailEdit = (EditText) findViewById(R.id.emailInput);
 
+        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.person_icon);
+        RoundedBitmapDrawable roundBitmap = RoundedBitmapDrawableFactory.create(getResources(), icon );
+        roundBitmap.setCircular(true);
+        mImageView.setImageDrawable(roundBitmap);
+
         mPerson = new Person();
     }
 
     @Override
     public void cancel(View view){
         super.cancel(view);
+    }
+
+    /**
+     * Called only when activity is opened after person is recognized
+     * @param view
+     */
+    public void insert(View view){
+        long newRowId = mPerson.saveToDb(db, dbHelper);
+
+        if (newRowId > 0){
+            Toast.makeText(this, String.format("Successfully created %s %s", mPerson.getFirstName(), mPerson.getLastName()), Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, String.format("Error creating %s %s", mPerson.getFirstName(), mPerson.getLastName()), Toast.LENGTH_SHORT).show();
+        }
+
+        // Go to MainActivity with destroying all activities between destination and this
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     public void save(View view){
@@ -201,27 +233,6 @@ public class PersonActivity extends BaseAppActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    // Called after async task is finished (callback method)
-    private void onBackgroundTaskCompleted(ResponseMessagePersonInsertOrEdit result){
-        if (result.getStatus() > 0){
-            Toast.makeText(this, String.format("Successfully created %s %s", mPerson.getFirstName(), mPerson.getLastName()), Toast.LENGTH_SHORT).show();
-
-            // Go to MainActivity with destroying all activities between destination and this
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-
-        }
-        else{
-            // Show alert dialog if status is not 1
-            ResponseMessagePersonInsertOrEdit responseMsgObj = result;
-            if (responseMsgObj.getStatus() != 1){
-                showAlertDialog(this, responseMsgObj.getResponseMsg(), "Error");
-            }
-
-        }
-    }
-
     private boolean validateData() {
         boolean valid = true;
         String errorMsg = "";
@@ -249,6 +260,20 @@ public class PersonActivity extends BaseAppActivity {
         if (!valid) { showAlertDialog(this, errorMsg, "Settings Error"); }
 
         return valid;
+    }
+
+    /**
+     * Method that takes Person's profile picture in Base64 and converts it bitmap that has 8 times less pixels than original
+     * and sets that bitmap on image view as circle
+     */
+    private void setProfilePicture(){
+        byte[] photoByteArr = ImageUtils.convertImageBase64ToByteArray(mPerson.getImageBase64());
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
+        mPhoto = BitmapFactory.decodeByteArray(photoByteArr, 0, photoByteArr.length, options);
+        RoundedBitmapDrawable roundBitmap = RoundedBitmapDrawableFactory.create(getResources(), mPhoto);
+        roundBitmap.setCircular(true);
+        mImageView.setImageDrawable(roundBitmap);
     }
 
     private class SetupPersonTask extends AsyncTask<Void, String, ResponseMessage> {
@@ -358,8 +383,22 @@ public class PersonActivity extends BaseAppActivity {
             super.onPostExecute(result);
             hideProgressDialog();
 
-            // Callback method, pass result to calling activity
-            mCallingActivity.onBackgroundTaskCompleted((ResponseMessagePersonInsertOrEdit) result);
+            if (result.getStatus() > 0){
+                Toast.makeText(mCallingActivity, String.format("Successfully created %s %s", mPerson.getFirstName(), mPerson.getLastName()), Toast.LENGTH_SHORT).show();
+
+                // Go to MainActivity with destroying all activities between destination and this
+                Intent intent = new Intent(mCallingActivity, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
+            }
+            else{
+                // Show alert dialog if status is not 1
+                ResponseMessagePersonInsertOrEdit responseMsgObj = (ResponseMessagePersonInsertOrEdit)result;
+                if (responseMsgObj.getStatus() != 1){
+                    showAlertDialog(mCallingActivity, responseMsgObj.getResponseMsg(), "Error");
+                }
+            }
         }
 
         @Override
