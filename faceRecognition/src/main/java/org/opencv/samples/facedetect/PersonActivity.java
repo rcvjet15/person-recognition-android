@@ -218,6 +218,8 @@ public class PersonActivity extends BaseAppActivity {
                         RoundedBitmapDrawable roundBitmap = RoundedBitmapDrawableFactory.create(getResources(), mPhoto);
                         roundBitmap.setCircular(true);
                         mImageView.setImageDrawable(roundBitmap);
+
+                        imageTaken = true;
                     }
                     catch (IOException e){
                         showAlertDialog(this, e.getMessage(), "Photo Setup Error");
@@ -255,7 +257,7 @@ public class PersonActivity extends BaseAppActivity {
             errorMsg = String.format("%s cannot be empty.", this.getString(R.string.email_label));
             valid = false;
         }
-        else if (mCurrentImageFile == null){
+        else if (mCurrentImageFile == null || imageTaken == false){
             errorMsg = "Profile picture is missing.";
             valid = false;
         }
