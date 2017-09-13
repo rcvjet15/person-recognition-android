@@ -32,7 +32,8 @@
                     android:text="@string/first_name_label"/>
                 <EditText
                     android:id="@+id/firstNameInput"
-                    style="@style/formInput"/>
+                    style="@style/formInput"
+                    android:inputType="textPersonName"/>
             </LinearLayout>
             <LinearLayout
                 style="@style/formLinearLayoutContainer">
@@ -42,7 +43,8 @@
                     android:text="@string/last_name_label"/>
                 <EditText
                     android:id="@+id/lastNameInput"
-                    style="@style/formInput"/>
+                    style="@style/formInput"
+                    android:inputType="textPersonName"/>
             </LinearLayout>
             <LinearLayout
                 style="@style/formLinearLayoutContainer">
