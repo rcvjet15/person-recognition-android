@@ -49,8 +49,6 @@ public class PersonInsertOrEditJsonUtils extends JsonUtils {
     @Override
     protected ResponseMessage readMessage(JsonReader reader) throws IOException{
         int status = -100;
-        Person person = null;
-        String imageBase64 = null;
         String serverResponseMsg = null;
 
         reader.beginObject();

@@ -174,10 +174,10 @@ public class PersonActivity extends BaseAppActivity {
         if (!validateData()){ return; }
 
         mPerson.setImageBase64(ImageUtils.convertBitmapToBase64(mPhoto));
-        mPerson.setFirstName(mFirstNameEdit.getText().toString());
-        mPerson.setLastName(mLastNameEdit.getText().toString());
-        mPerson.setAge(Integer.parseInt(mAgeEdit.getText().toString()));
-        mPerson.setEmail(mEmailEdit.getText().toString());
+        mPerson.setFirstName(mFirstNameEdit.getText().toString().trim());
+        mPerson.setLastName(mLastNameEdit.getText().toString().trim());
+        mPerson.setAge(Integer.parseInt(mAgeEdit.getText().toString().trim()));
+        mPerson.setEmail(mEmailEdit.getText().toString().trim());
 
         SetupPersonTask task = new SetupPersonTask(this);
         task.execute();
@@ -214,7 +214,10 @@ public class PersonActivity extends BaseAppActivity {
                 case Activity.RESULT_OK:
                     try{
                         mPhoto = ImageUtils.setupPictureVertical(mCurrentImageFile.getAbsolutePath());
-                        mImageView.setImageBitmap(mPhoto);
+
+                        RoundedBitmapDrawable roundBitmap = RoundedBitmapDrawableFactory.create(getResources(), mPhoto);
+                        roundBitmap.setCircular(true);
+                        mImageView.setImageDrawable(roundBitmap);
                     }
                     catch (IOException e){
                         showAlertDialog(this, e.getMessage(), "Photo Setup Error");

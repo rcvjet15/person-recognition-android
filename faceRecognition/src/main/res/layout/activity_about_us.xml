@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Aplikacija Face Recognition izrađena je od strane studenata diplomsokg studija riječkog sveučilišta, odjela za infromatiku. Članovi tima su: Cvjetković Robert, Belančić Matija i Čančar Mario."
+                android:text="Aplikacija Face Recognition izrađena je od strane studenata diplomskog studija riječkog sveučilišta, Odjela za infromatiku. Članovi tima su: Cvjetković Robert, Belančić Matija i Čančar Mario."
                 />
 
             <TextView
