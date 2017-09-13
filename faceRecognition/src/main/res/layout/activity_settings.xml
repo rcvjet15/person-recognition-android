@@ -34,6 +34,7 @@
                 <EditText
                     android:id="@+id/addressInput"
                     style="@style/formInput"
+                    android:inputType="textUri"
                     android:hint="@string/address_hint"/>
             </LinearLayout>
             <LinearLayout
