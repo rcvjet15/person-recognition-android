@@ -40,6 +40,7 @@
             <TextView
                 android:id="@+id/emailShow"
                 style="@style/textViewPersonData"
+                android:autoLink="email"
                 android:text="@string/show_email_label"/>
             <TextView
                 android:id="@+id/faceEncodingShow"
@@ -56,14 +57,21 @@
         <LinearLayout
             android:id="@+id/showFooter"
             style="@style/personActivityActionFooter"
-            android:orientation="horizontal"
-            android:weightSum="100">
+            android:visibility="visible"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/okBtn"
+                style="@style/actionFooterButton"
+                android:onClick="ok"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:text="@string/ok"/>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/actionFooter"
             style="@style/personActivityActionFooter"
-            android:visibility="visible"
+            android:visibility="gone"
             android:orientation="horizontal"
             android:weightSum="100">
 

@@ -29,8 +29,6 @@
 
         <activity android:name=".PersonActivity"
             android:screenOrientation="portrait">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".RecognizeActivity"/>
         </activity>
 
         <activity android:name=".SettingsActivity"

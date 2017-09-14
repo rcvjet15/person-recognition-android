@@ -1,6 +1,7 @@
 package org.opencv.samples.facedetect;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -53,9 +54,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleAdap
     public void onBindViewHolder(PeopleAdapterViewHolder holder, int position) {
         mCursor.moveToPosition(position);
 
-        long id = mCursor.getLong(
-                mCursor.getColumnIndexOrThrow(PersonEntry._ID));
-
         String firstName = mCursor.getString(
                 mCursor.getColumnIndexOrThrow(PersonEntry.COLUMN_FIRST_NAME));
 
@@ -64,12 +62,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleAdap
 
         byte[] imageByteArr = mCursor.getBlob(
                 mCursor.getColumnIndexOrThrow(PersonEntry.COLUMN_PROFILE_PIC));
-
-//        Bitmap bitmap = BitmapFactory.decodeByteArray(imageByteArr, 0, imageByteArr.length);
-//        RoundedBitmapDrawable roundBitmap = RoundedBitmapDrawableFactory.create(mContext.getResources(), bitmap);
-//        roundBitmap.setCircular(true);
-//
-//        holder.profilePic.setImageDrawable(roundBitmap);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 8;
@@ -117,7 +109,9 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleAdap
 
             if (id < 1) return;
 
-
+            Intent intent = new Intent(mContext, PersonActivity.class);
+            intent.putExtra(Intent.ACTION_VIEW, id);
+            mContext.startActivity(intent);
         }
     }
 }

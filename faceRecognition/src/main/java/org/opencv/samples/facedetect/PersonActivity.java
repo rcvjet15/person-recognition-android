@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.opencv.samples.facedetect.data.PersonContract;
 import org.opencv.samples.facedetect.utilities.PersonInsertOrEditJsonUtils;
 import org.opencv.samples.facedetect.utilities.ResponseMessage;
 import org.opencv.samples.facedetect.utilities.ImageUtils;
@@ -57,6 +58,7 @@ public class PersonActivity extends BaseAppActivity {
     private LinearLayout mShowFooter;
     private LinearLayout mActionFooter;
     private Button mSaveBtn;
+    private Button mOkBtn;
     private EditText mFirstNameEdit;
     private EditText mLastNameEdit;
     private EditText mAgeEdit;
@@ -86,6 +88,11 @@ public class PersonActivity extends BaseAppActivity {
                 setupInsertOrEditActivity(bundleExtras);
                 this.getSupportActionBar().setTitle("Add Person");
             }
+            else if (bundleExtras.containsKey(Intent.ACTION_VIEW)){
+                setupShowActivity(bundleExtras);
+                this.getSupportActionBar().setTitle(String.format("%s %s", mPerson.getFirstName(), mPerson.getLastName()));
+            }
+
         }
     }
 
@@ -98,6 +105,9 @@ public class PersonActivity extends BaseAppActivity {
 
         mActionFooter = (LinearLayout) findViewById(R.id.actionFooter);
         mActionFooter.setVisibility(View.VISIBLE);
+
+        mShowFooter = (LinearLayout) findViewById(R.id.showFooter);
+        mShowFooter.setVisibility(View.GONE);
 
         mSaveBtn = (Button) findViewById(R.id.saveBtn);
 
@@ -143,6 +153,41 @@ public class PersonActivity extends BaseAppActivity {
 
         mPerson = new Person();
     }
+
+    private void setupShowActivity(Bundle extras){
+        setContentView(R.layout.activity_person_insert_or_show);
+
+        mActionFooter = (LinearLayout) findViewById(R.id.actionFooter);
+        mActionFooter.setVisibility(View.GONE);
+
+        mShowFooter = (LinearLayout) findViewById(R.id.showFooter);
+        mShowFooter.setVisibility(View.VISIBLE);
+
+        mOkBtn = (Button) findViewById(R.id.okBtn);
+
+        mImageView = (ImageView) findViewById(R.id.profilePicShow);
+        mFirstNameText = (TextView) findViewById(R.id.firstNameShow);
+        mLastNameText = (TextView) findViewById(R.id.lastNameShow);
+        mAgeText = (TextView) findViewById(R.id.ageShow);
+        mEmailText = (TextView) findViewById(R.id.emailShow);
+        mFaceEncodingText = (TextView) findViewById(R.id.faceEncodingShow);
+
+        // Not implemented yet. Task is set in todo
+        mFaceEncodingText.setVisibility(View.GONE);
+
+        long id = extras.getLong(Intent.ACTION_VIEW);
+
+        mPerson = Person.get(id, db, dbHelper);
+
+        // Set profile picture as circle
+        setProfilePicture();
+        mFirstNameText.setText(String.format("%s %s", mFirstNameText.getText(), mPerson.getFirstName()));
+        mLastNameText.setText(String.format("%s %s", mLastNameText.getText(), mPerson.getLastName()));
+        mAgeText.setText(String.format("%s %d", mAgeText.getText(), mPerson.getAge()));
+        mEmailText.setText(String.format("%s %s", mEmailText.getText(), mPerson.getEmail()));
+    }
+
+    public void ok(View view){ finish(); }
 
     @Override
     public void cancel(View view){

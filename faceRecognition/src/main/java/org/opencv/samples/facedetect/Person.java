@@ -3,8 +3,11 @@ package org.opencv.samples.facedetect;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.drm.DrmManagerClient;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Parcel;
@@ -219,5 +222,67 @@ public class Person implements Parcelable {
         values.put(PersonContract.PersonEntry.COLUMN_PROFILE_PIC, ImageUtils.convertImageBase64ToByteArray(mImageBase64));
         values.put(PersonContract.PersonEntry.COLUMN_VALID_FROM, System.currentTimeMillis());
         return  db.insert(PersonContract.PersonEntry.TABLE_NAME, null, values);
+    }
+
+    public static Person get(long id, SQLiteDatabase db, RecognitionDbHelper dbHelper){
+        db = dbHelper.getReadableDatabase();
+
+        String[] projection = new String[]{
+                PersonContract.PersonEntry._ID,
+                PersonContract.PersonEntry.COLUMN_FIRST_NAME,
+                PersonContract.PersonEntry.COLUMN_LAST_NAME,
+                PersonContract.PersonEntry.COLUMN_AGE,
+                PersonContract.PersonEntry.COLUMN_EMAIL,
+                PersonContract.PersonEntry.COLUMN_PROFILE_PIC,
+        };
+
+        String selection = PersonContract.PersonEntry._ID + " = ?";
+        String[] selectionArgs = new String[] { String.valueOf(id) };
+
+        Cursor cursor = db.query(
+                PersonContract.PersonEntry.TABLE_NAME,
+                projection ,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        Person person = new Person();
+        try{
+            if (cursor.getCount() == 0) return null;
+
+            cursor.moveToFirst();
+
+            person.mId = cursor.getLong(
+                    cursor.getColumnIndexOrThrow(PersonContract.PersonEntry._ID));
+
+            person.mFirstName = cursor.getString(
+                    cursor.getColumnIndexOrThrow(PersonContract.PersonEntry.COLUMN_FIRST_NAME));
+
+            person.mLastName = cursor.getString(
+                    cursor.getColumnIndexOrThrow(PersonContract.PersonEntry.COLUMN_LAST_NAME));
+
+            person.mAge = cursor.getInt(
+                    cursor.getColumnIndexOrThrow(PersonContract.PersonEntry.COLUMN_AGE));
+
+            person.mEmail = cursor.getString(
+                    cursor.getColumnIndexOrThrow(PersonContract.PersonEntry.COLUMN_EMAIL));
+
+            byte[] imageByteArr = cursor.getBlob(
+                    cursor.getColumnIndexOrThrow(PersonContract.PersonEntry.COLUMN_PROFILE_PIC));
+
+            person.mImageBase64 = Base64.encodeToString(imageByteArr, Base64.DEFAULT);
+            return person;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            cursor.close();
+        }
+        return null;
+
     }
 }
