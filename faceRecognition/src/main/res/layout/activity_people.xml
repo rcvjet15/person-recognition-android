@@ -7,5 +7,14 @@
         android:id="@+id/recyclerViewPeopleList"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="8dp"
+        android:visibility="invisible"/>
+
+    <!-- A progress bar that will be shown to users to indicate that weather data is loading -->
+    <ProgressBar
+        android:id="@+id/pbLoadingIndicator"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
 </FrameLayout>

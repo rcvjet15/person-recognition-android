@@ -14,16 +14,23 @@
         <ImageView
             android:id="@+id/personItemProfilePic"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="20"/>
+            android:layout_height="60dp"
+            android:layout_weight="15"/>
         <TextView
             android:id="@+id/personItemSummary"
             style="@style/TextAppearance.AppCompat.Large"
             android:layout_width="0dp"
-            android:layout_weight="80"
+            android:layout_weight="75"
             android:layout_height="match_parent"
             android:padding="16dp"
             tools:text="Last name First Name"/>
+        <ImageView
+            android:id="@+id/arrowRight"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="9"
+            android:layout_gravity="center"
+            android:background="@drawable/arrow_right3"/>
     </LinearLayout>
 
 

@@ -65,7 +65,16 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleAdap
         byte[] imageByteArr = mCursor.getBlob(
                 mCursor.getColumnIndexOrThrow(PersonEntry.COLUMN_PROFILE_PIC));
 
-        Bitmap bitmap = BitmapFactory.decodeByteArray(imageByteArr, 0, imageByteArr.length);
+//        Bitmap bitmap = BitmapFactory.decodeByteArray(imageByteArr, 0, imageByteArr.length);
+//        RoundedBitmapDrawable roundBitmap = RoundedBitmapDrawableFactory.create(mContext.getResources(), bitmap);
+//        roundBitmap.setCircular(true);
+//
+//        holder.profilePic.setImageDrawable(roundBitmap);
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 8;
+
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageByteArr, 0, imageByteArr.length, options);
         RoundedBitmapDrawable roundBitmap = RoundedBitmapDrawableFactory.create(mContext.getResources(), bitmap);
         roundBitmap.setCircular(true);
 
@@ -101,6 +110,13 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleAdap
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
+            mCursor.moveToPosition(adapterPosition);
+
+            long id = mCursor.getLong(
+                    mCursor.getColumnIndexOrThrow(PersonEntry._ID));
+
+            if (id < 1) return;
+
 
         }
     }

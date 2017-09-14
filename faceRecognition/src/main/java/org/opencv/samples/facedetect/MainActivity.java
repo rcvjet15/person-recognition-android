@@ -1,32 +1,10 @@
 package org.opencv.samples.facedetect;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import java.text.SimpleDateFormat;
 
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.preference.PreferenceManager;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
-import android.support.v4.content.SharedPreferencesCompat;
-import android.support.v4.graphics.BitmapCompat;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-
-import org.opencv.samples.facedetect.utilities.*;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Date;
 
 public class MainActivity extends BaseAppActivity {
 
