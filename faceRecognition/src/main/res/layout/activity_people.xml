@@ -8,6 +8,8 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:paddingBottom="8dp"
+        android:clickable="true"
+        android:focusable="true"
         android:visibility="invisible"/>
 
     <!-- A progress bar that will be shown to users to indicate that weather data is loading -->
