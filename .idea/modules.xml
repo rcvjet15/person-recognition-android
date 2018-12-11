@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PersonRecognition.iml" filepath="$PROJECT_DIR$/PersonRecognition.iml" />
       <module fileurl="file://$PROJECT_DIR$/faceRecognition/faceRecognition.iml" filepath="$PROJECT_DIR$/faceRecognition/faceRecognition.iml" />
-      <module fileurl="file://$PROJECT_DIR$/openCVLibrary320/openCVLibrary320.iml" filepath="$PROJECT_DIR$/openCVLibrary320/openCVLibrary320.iml" />
+      <module fileurl="file://$PROJECT_DIR$/person-recognition-android.iml" filepath="$PROJECT_DIR$/person-recognition-android.iml" />
     </modules>
   </component>
 </project>

@@ -10,7 +10,6 @@ android {
         }
     }
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "org.opencv.samples.facedetect"
         minSdkVersion 11
@@ -35,7 +34,6 @@ android {
 }
 
 dependencies {
-    compile project(':openCVLibrary320')
-    compile 'com.android.support:appcompat-v7:25.0.1'
-    compile 'com.android.support:recyclerview-v7:25.0.1'
+    implementation 'com.android.support:appcompat-v7:25.0.1'
+    implementation 'com.android.support:recyclerview-v7:25.0.1'
 }

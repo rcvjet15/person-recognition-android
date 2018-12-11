@@ -10,7 +10,7 @@ public final class PersonContract {
     // Prevent accidental instantiation
     private PersonContract() {}
 
-    // todo: Add face necoding. After person is created, get fom server face encoding and store it
+    // todo: Add face encoding. After person is created, get fom server face encoding and store it
     public static class PersonEntry implements BaseColumns {
         public static final String TABLE_NAME = "person";
         public static final String COLUMN_FIRST_NAME = "first_name";

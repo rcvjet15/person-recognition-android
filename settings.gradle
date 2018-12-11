@@ -1,3 +1,2 @@
 
-include ':openCVLibrary320'
 include ':faceRecognition'

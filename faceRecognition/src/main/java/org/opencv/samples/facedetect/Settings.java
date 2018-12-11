@@ -4,9 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.support.v7.widget.ContentFrameLayout;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.opencv.samples.facedetect.data.RecognitionDbHelper;
 import org.opencv.samples.facedetect.data.SettingContract.*;
@@ -25,15 +23,18 @@ public class Settings {
     public static final String KEY_PORT = "port";
     public static final String KEY_REST_API_SUB_PATH = "rest_api_sub_path";
     public static final String KEY_RECOGNIZE_PATH = "recognize_path";
+    public static final String KEY_PEOPLE_PATH = "people_path";
     public static final String KEY_CREATE_PATH = "create_path";
 
-    public enum UriType { SERVER_ADDR, CREATE, RECOGNIZE, PEOPLE_API }
+    public enum UriType { SERVER_ADDR, CREATE, RECOGNIZE, PEOPLE}
 
     private static String sScheme = "http";
     private static String sAddress = "robi-web.ddns.net";
     private static long sPort = 4000;
-    private static String sRestApiSubPath = "people-api";
+    private static String sApiSubPath = "api";
+    private static String sPeoplePath = "people";
     private static String sRecognizePath = "recognize";
+    private static String sPersonPath = "person";
     private static String sCreatePath = "create";
 
     public static String getScheme(){
@@ -61,11 +62,11 @@ public class Settings {
     }
 
     public static String getRestApiSubPath(){
-        return sRestApiSubPath;
+        return sApiSubPath;
     }
 
-    public static void setRestApiSubPath(String restApiSubPath){
-        sRestApiSubPath = restApiSubPath;
+    public static void setRestApiSubPath(String apiSubPath){
+        sApiSubPath = apiSubPath;
     }
 
     public static String getRecognizePath(){
@@ -87,19 +88,19 @@ public class Settings {
     public static Uri UriFactory(UriType uriType){
         Uri.Builder uriBuilder = new Uri.Builder()
                 .scheme(sScheme)
-                .encodedAuthority(String.format("%s:%d", sAddress, sPort));
+                .encodedAuthority(String.format("%s:%d", sAddress, sPort))
+                .appendPath(sApiSubPath);
 
         switch (uriType){
             case SERVER_ADDR: {
                 break;
             }
-            case PEOPLE_API: {
-                uriBuilder.appendPath(sRestApiSubPath);
+            case PEOPLE: {
+                uriBuilder.appendPath(sPeoplePath);
                 break;
             }
             case RECOGNIZE: {
-                uriBuilder.appendPath(sRestApiSubPath)
-                        .appendPath(sRecognizePath);
+                uriBuilder.appendPath(sRecognizePath);
                 break;
             }
             default: {
@@ -119,8 +120,9 @@ public class Settings {
         settingsMap.put(Settings.KEY_SCHEME, sScheme);
         settingsMap.put(Settings.KEY_ADDRESS, sAddress);
         settingsMap.put(Settings.KEY_PORT, String.valueOf(sPort));
-        settingsMap.put(Settings.KEY_REST_API_SUB_PATH, sRestApiSubPath);
+        settingsMap.put(Settings.KEY_REST_API_SUB_PATH, sApiSubPath);
         settingsMap.put(Settings.KEY_RECOGNIZE_PATH, sRecognizePath);
+        settingsMap.put(Settings.KEY_PEOPLE_PATH, sPeoplePath);
 
         db = dbHelper.getWritableDatabase();
         db.beginTransaction();

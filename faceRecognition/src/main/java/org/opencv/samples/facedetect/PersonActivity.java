@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,13 +22,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.opencv.samples.facedetect.data.PersonContract;
 import org.opencv.samples.facedetect.utilities.PersonInsertOrEditJsonUtils;
 import org.opencv.samples.facedetect.utilities.ResponseMessage;
 import org.opencv.samples.facedetect.utilities.ImageUtils;
-import org.opencv.samples.facedetect.utilities.RecognizeJsonUtils;
 import org.opencv.samples.facedetect.utilities.ResponseMessagePersonInsertOrEdit;
-import org.opencv.samples.facedetect.utilities.ResponseMessageRecognize;
 
 import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
@@ -465,7 +461,7 @@ public class PersonActivity extends BaseAppActivity {
         }
 
         private void setupPostHeaders() throws MalformedURLException, IOException {
-            mUrl = new URL(Settings.UriFactory(Settings.UriType.PEOPLE_API).toString());
+            mUrl = new URL(Settings.UriFactory(Settings.UriType.PEOPLE).toString());
 
             mHttpUrlConnection = (HttpURLConnection) mUrl.openConnection();
             mHttpUrlConnection.setUseCaches(false);
@@ -525,7 +521,7 @@ public class PersonActivity extends BaseAppActivity {
             Boolean available = null;
             try{
                 // Test with this URL because RECOGNIZE uri takes POST request
-                URL url = new URL(Settings.UriFactory(Settings.UriType.PEOPLE_API).toString());
+                URL url = new URL(Settings.UriFactory(Settings.UriType.RECOGNIZE).toString());
                 mHttpUrlConnection = (HttpURLConnection) url.openConnection();
                 mHttpUrlConnection.setConnectTimeout(10000);
                 mHttpUrlConnection.connect();

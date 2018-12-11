@@ -303,7 +303,7 @@ public class RecognizeActivity extends BaseAppActivity {
             Boolean available = null;
             try{
                 // Test with this URL because RECOGNIZE uri takes POST request
-                URL url = new URL(Settings.UriFactory(Settings.UriType.PEOPLE_API).toString());
+                URL url = new URL(Settings.UriFactory(Settings.UriType.RECOGNIZE).toString());
                 mHttpUrlConnection = (HttpURLConnection) url.openConnection();
                 mHttpUrlConnection.setConnectTimeout(10000);
                 mHttpUrlConnection.connect();
